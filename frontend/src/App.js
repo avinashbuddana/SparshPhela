@@ -8,7 +8,6 @@ import { SmoothScroll, ScrollToTop } from "@/components/motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import CursorFollower from "@/components/CursorFollower";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 
 import Home from "@/pages/Home";
@@ -58,7 +57,6 @@ function ProtectedRoute({ children }) {
 function App() {
   return (
     <div className="App">
-      <CursorFollower />
       <AuthProvider>
         <BrowserRouter>
           <ScrollProgressBar />

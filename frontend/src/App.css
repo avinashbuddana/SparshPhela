@@ -2,11 +2,6 @@
   min-height: 100vh;
 }
 
-/* ── Hide system cursor on mouse devices (CursorFollower takes over) ── */
-@media (hover: hover) {
-  * { cursor: none !important; }
-}
-
 /* ── Animated gradient text — "Motherhood" in hero ── */
 @keyframes gradientShift {
   0%   { background-position: 0%   50%; }
