@@ -8,7 +8,6 @@ import TestimonialsCarousel from "../components/TestimonialsCarousel";
 import SEO from "../components/SEO";
 import { ORGANIZATION, breadcrumb } from "../lib/seo";
 import ContactCTA from "../components/ContactCTA";
-import { useTranslation } from "react-i18next";
 
 const VALUES = [
   { icon: Heart, title: "Compassion", desc: "We lead with empathy, meeting every mother where she is — without judgement." },
@@ -22,7 +21,6 @@ const STATS = [
 ];
 
 export default function About() {
-  const { t } = useTranslation();
   return (
     <div data-testid="about-page">
       <SEO
@@ -32,8 +30,8 @@ export default function About() {
         jsonLd={[ORGANIZATION, breadcrumb([{ name: "Home", url: "/" }, { name: "About Us" }])]}
       />
       <PageHero
-        eyebrow={t("about.eyebrow")}
-        title={t("about.hero_title")}
+        eyebrow="Our Story"
+        title="Born from love, built for every mother"
         subtitle="Sparsh Pehla means 'the first touch' — the tender beginning of a lifelong bond. We exist to make that journey peaceful, supported, and deeply cared for."
         image="about"
         crumbs={[{ label: "About Us" }]}

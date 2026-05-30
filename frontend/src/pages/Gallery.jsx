@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { getGallery, img } from "../lib/api";
 import PageHero from "../components/PageHero";
@@ -7,7 +6,6 @@ import SEO from "../components/SEO";
 import ContactCTA from "../components/ContactCTA";
 
 export default function Gallery() {
-  const { t } = useTranslation();
   const [items, setItems] = useState([]);
   const [active, setActive] = useState("All");
   const [lightbox, setLightbox] = useState(null);
@@ -27,8 +25,8 @@ export default function Gallery() {
         canonical={`${window.location.origin}/gallery`}
       />
       <PageHero
-        eyebrow={t("gallery.eyebrow")}
-        title={t("gallery.hero_title")}
+        eyebrow="Gallery"
+        title="Moments worth treasuring"
         subtitle="A glimpse into the tender, beautiful world of motherhood we are honoured to be part of."
         image="photography"
         crumbs={[{ label: "Gallery" }]}

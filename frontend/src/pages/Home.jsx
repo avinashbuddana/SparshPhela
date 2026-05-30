@@ -20,7 +20,6 @@ import ServiceCard from "../components/ServiceCard";
 import TestimonialsCarousel from "../components/TestimonialsCarousel";
 import SEO from "../components/SEO";
 import { LOCAL_BUSINESS, ORGANIZATION } from "../lib/seo";
-import { useTranslation } from "react-i18next";
 
 const JOURNEY = [
   { phase: "Before", title: "Planning & Garbh Sanskar", desc: "Begin with intention — nurturing body, mind, and the sacred bond from the very start." },
@@ -42,7 +41,6 @@ export default function Home() {
   const [blogs, setBlogs] = useState([]);
   const [faqs, setFaqs] = useState([]);
   const heroRef = useRef(null);
-  const { t } = useTranslation();
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 160]);
   const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
@@ -74,19 +72,19 @@ export default function Home() {
 
         <div className="container-px relative z-10 pt-24">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }} className="max-w-2xl">
-            <span className="text-xs tracking-[0.25em] uppercase text-gold-dark font-bold">{t("home.hero_eyebrow")}</span>
+            <span className="text-xs tracking-[0.25em] uppercase text-gold-dark font-bold">Maternity &amp; Parenting Wellness</span>
             <h1 className="mt-5 font-serif text-4xl sm:text-5xl lg:text-[68px] leading-[1.05] tracking-tight font-medium text-ink text-balance [text-shadow:0_1px_24px_rgba(253,251,247,0.8)]">
-              {t("home.hero_title")}
+              Supporting Every Step of <span className="italic text-gold-dark font-semibold">Motherhood</span>
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-ink-soft max-w-xl">
-              {t("home.hero_subtitle")}
+              A peaceful, premium wellness ecosystem nurturing mothers and families — from the first heartbeat to the joys of parenting, with warmth and timeless Indian wisdom.
             </p>
             <div className="mt-9 flex flex-wrap gap-4">
               <Link to="/book" data-testid="hero-book-cta" className="inline-flex items-center gap-2 rounded-full bg-gold px-8 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:bg-gold-dark hover:scale-[1.03] hover:shadow-xl">
-                {t("home.hero_cta_book")} <ArrowRight size={18} strokeWidth={2} />
+                Book a Consultation <ArrowRight size={18} strokeWidth={2} />
               </Link>
               <Link to="/services" data-testid="hero-services-cta" className="inline-flex items-center gap-2 rounded-full border border-ink/15 px-8 py-3.5 text-sm font-medium text-ink transition-all duration-300 hover:border-gold hover:text-gold">
-                {t("home.hero_cta_services")}
+                Explore Services
               </Link>
             </div>
           </motion.div>
@@ -125,9 +123,9 @@ export default function Home() {
 
           <div>
             <SectionHeading
-              eyebrow={t("home.about_eyebrow")}
-              title={t("home.about_title")}
-              subtitle="Sparsh Pehla — meaning 'the first touch' — was born from a simple belief: that every mother deserves to feel held, supported, and celebrated."
+              eyebrow="About Sparsh Pehla"
+              title="A sanctuary of care for mothers and families"
+              subtitle="Sparsh Pehla — meaning 'the first touch' — was born from a simple belief: that every mother deserves to feel held, supported, and celebrated. We blend modern wellness with the nurturing wisdom of Indian traditions to create a peaceful ecosystem of care."
             />
             <StaggerGroup className="mt-8 grid grid-cols-2 gap-5">
               {["Personalised wellness journeys", "Certified, compassionate experts", "Rooted in Indian tradition", "Care for the whole family"].map((t) => (
@@ -150,7 +148,7 @@ export default function Home() {
       <section className="section-py bg-ivory">
         <div className="container-px">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
-            <SectionHeading eyebrow={t("home.services_eyebrow")} title={t("home.services_title")} />
+            <SectionHeading eyebrow="What We Offer" title="Wellness for every chapter of motherhood" />
             <Reveal delay={0.1}>
               <Link to="/services" data-testid="home-view-all-services" className="inline-flex items-center gap-2 rounded-full border border-ink/15 px-6 py-2.5 text-sm font-medium text-ink hover:border-gold hover:text-gold transition-all">
                 View all services <ArrowRight size={16} />
@@ -181,7 +179,7 @@ export default function Home() {
           <img src={img("cta")} alt="" className="w-full h-full object-cover" />
         </div>
         <div className="container-px relative">
-          <SectionHeading eyebrow={t("home.why_eyebrow")} title={t("home.why_title")} light align="center" className="!items-center" />
+          <SectionHeading eyebrow="Why Sparsh Pehla" title="Care you can feel, trust you can lean on" light align="center" className="!items-center" />
           <StaggerGroup className="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {WHY.map(({ icon: Icon, title, desc }) => (
               <StaggerItem key={title} className="text-center">
@@ -243,7 +241,7 @@ export default function Home() {
       {/* ============ TESTIMONIALS ============ */}
       <section className="section-py bg-peach/30">
         <div className="container-px">
-          <SectionHeading eyebrow={t("home.testimonials_eyebrow")} title={t("home.testimonials_title")} align="center" className="!items-center mb-14" />
+          <SectionHeading eyebrow="Mothers' Stories" title="Loved by families across India" align="center" className="!items-center mb-14" />
           <TestimonialsCarousel data={testimonials.length ? testimonials : null} />
         </div>
       </section>
@@ -268,18 +266,18 @@ export default function Home() {
                 </span>
                 <div>
                   <p className="text-xs font-semibold tracking-widest uppercase text-ink-muted mb-1">Instagram</p>
-                  <h3 className="font-serif text-2xl md:text-3xl text-ink leading-tight">{t("home.instagram_title")}</h3>
+                  <h3 className="font-serif text-2xl md:text-3xl text-ink leading-tight">Follow us to get the<br className="hidden sm:block" /> latest updates</h3>
                 </div>
               </div>
 
               {/* Right */}
               <div className="flex flex-col items-center sm:items-end gap-2 shrink-0">
                 <p className="text-sm text-ink-soft text-center sm:text-right max-w-xs">
-                  {t("home.instagram_subtitle")}
+                  Daily wellness tips, behind-the-scenes moments &amp; stories of motherhood — all on Instagram.
                 </p>
                 <span className="mt-2 inline-flex items-center gap-2 rounded-full bg-ink text-ivory px-7 py-3 text-sm font-medium group-hover:bg-gold transition-colors duration-300">
                   <IgIcon size={16} />
-                  {t("home.instagram_follow")}
+                  @sparsh.pehla
                 </span>
               </div>
             </a>
@@ -308,10 +306,10 @@ export default function Home() {
       <section className="section-py bg-warmivory">
         <div className="container-px">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
-            <SectionHeading eyebrow={t("home.journal_eyebrow")} title={t("home.journal_title")} />
+            <SectionHeading eyebrow="The Journal" title="Wisdom for your motherhood journey" />
             <Reveal delay={0.1}>
               <Link to="/blog" data-testid="home-view-all-blogs" className="inline-flex items-center gap-2 rounded-full border border-ink/15 px-6 py-2.5 text-sm font-medium text-ink hover:border-gold hover:text-gold transition-all">
-                {t("home.journal_read")} <ArrowRight size={16} />
+                Read the journal <ArrowRight size={16} />
               </Link>
             </Reveal>
           </div>
@@ -337,7 +335,7 @@ export default function Home() {
       <section className="section-py bg-ivory">
         <div className="container-px grid md:grid-cols-12 gap-12">
           <div className="md:col-span-5">
-            <SectionHeading eyebrow={t("home.faq_eyebrow")} title={t("home.faq_title")} subtitle="Have more questions? We're always here to help — reach out any time." />
+            <SectionHeading eyebrow="Questions" title="Everything you'd like to know" subtitle="Have more questions? We're always here to help — reach out any time." />
             <Link to="/contact" className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-gold hover:gap-3 transition-all">
               Contact us <ArrowUpRight size={16} />
             </Link>
@@ -360,8 +358,8 @@ export default function Home() {
         <img src={img("intro")} alt="" className="absolute inset-0 w-full h-full object-cover opacity-25" />
         <div className="container-px relative text-center max-w-3xl mx-auto text-ivory">
           <Reveal>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium leading-tight">{t("home.cta_title")}</h2>
-            <p className="mt-5 text-ivory/70 text-lg">{t("home.cta_subtitle")}</p>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium leading-tight">Begin your journey with Sparsh Pehla</h2>
+            <p className="mt-5 text-ivory/70 text-lg">Let us support you with care, warmth, and wisdom — every step of the way.</p>
             <div className="mt-9 flex flex-wrap justify-center gap-4">
               <Link to="/book" data-testid="cta-book" className="inline-flex items-center gap-2 rounded-full bg-gold px-8 py-3.5 text-sm font-medium text-white hover:bg-gold/90 hover:scale-[1.03] transition-all">
                 <CalendarCheck size={17} strokeWidth={1.8} /> Book a Consultation

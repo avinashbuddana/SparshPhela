@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu } from "lucide-react";
-import { useTranslation } from "react-i18next";
+import { Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import Logo from "./Logo";
-import LanguageSwitcher from "./LanguageSwitcher";
+
+const NAV = [
+  { to: "/", label: "Home" },
+  { to: "/about", label: "About" },
+  { to: "/services", label: "Services" },
+  { to: "/blog", label: "Journal" },
+  { to: "/gallery", label: "Gallery" },
+  { to: "/testimonials", label: "Stories" },
+  { to: "/contact", label: "Contact" },
+];
 
 export default function Navbar() {
-  const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
-
-  const NAV = [
-    { to: "/",            label: "Home",     key: null },
-    { to: "/about",       label: t("nav.about"),    key: "about" },
-    { to: "/services",    label: t("nav.services"), key: "services" },
-    { to: "/blog",        label: t("nav.journal"),  key: "journal" },
-    { to: "/gallery",     label: t("nav.gallery"),  key: "gallery" },
-    { to: "/testimonials",label: t("nav.stories"),  key: "stories" },
-    { to: "/contact",     label: t("nav.contact"),  key: "contact" },
-  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -44,11 +41,11 @@ export default function Navbar() {
         </Link>
 
         <ul className="hidden lg:flex items-center gap-8">
-          {NAV.filter(i => i.key).map((item) => (
+          {NAV.map((item) => (
             <li key={item.to}>
               <NavLink
                 to={item.to}
-                data-testid={`nav-${item.key}`}
+                data-testid={`nav-${item.label.toLowerCase()}`}
                 className={({ isActive }) =>
                   `relative text-sm tracking-wide transition-colors duration-300 after:absolute after:-bottom-1.5 after:left-0 after:h-px after:bg-gold after:transition-all after:duration-300 ${
                     isActive ? "text-gold after:w-full" : "text-ink-soft hover:text-ink after:w-0 hover:after:w-full"
@@ -62,14 +59,12 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-3">
-          <LanguageSwitcher />
-
           <Link
             to="/book"
             data-testid="navbar-book-cta"
             className="hidden sm:inline-flex items-center rounded-full bg-gold px-6 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:bg-gold-dark hover:scale-[1.03] hover:shadow-lg"
           >
-            {t("common.book_consultation")}
+            Book Consultation
           </Link>
 
           <Sheet open={open} onOpenChange={setOpen}>
@@ -82,11 +77,11 @@ export default function Navbar() {
               <div className="flex flex-col h-full">
                 <Logo size="md" className="mb-8" />
                 <ul className="flex flex-col gap-5">
-                  {NAV.filter(i => i.key).map((item) => (
+                  {NAV.map((item) => (
                     <li key={item.to}>
                       <NavLink
                         to={item.to}
-                        data-testid={`mobile-nav-${item.key}`}
+                        data-testid={`mobile-nav-${item.label.toLowerCase()}`}
                         className={({ isActive }) =>
                           `font-serif text-xl ${isActive ? "text-gold" : "text-ink"}`
                         }
@@ -96,15 +91,12 @@ export default function Navbar() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-6">
-                  <LanguageSwitcher />
-                </div>
                 <Link
                   to="/book"
                   data-testid="mobile-book-cta"
-                  className="mt-4 inline-flex justify-center rounded-full bg-gold px-6 py-3 text-sm font-medium text-white"
+                  className="mt-auto inline-flex justify-center rounded-full bg-gold px-6 py-3 text-sm font-medium text-white"
                 >
-                  {t("common.book_consultation")}
+                  Book Consultation
                 </Link>
               </div>
             </SheetContent>
