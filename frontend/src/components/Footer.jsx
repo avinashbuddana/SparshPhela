@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Instagram, Facebook, Youtube, MapPin, Phone, Mail, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { postNewsletter, formatApiErrorDetail } from "../lib/api";
+import Logo from "./Logo";
 
 const SERVICES_LINKS = [
   ["Garbh Sanskar", "/services/garbh-sanskar"],
@@ -46,9 +47,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-10">
           {/* Brand + newsletter */}
           <div className="md:col-span-4">
-            <h3 className="font-serif text-3xl font-semibold">
-              Sparsh<span className="text-gold"> Pehla</span>
-            </h3>
+            <Logo light size="lg" />
             <p className="mt-4 text-ivory/60 leading-relaxed max-w-sm">
               Supporting every step of motherhood with warmth, wisdom, and care — a luxury maternity & parenting wellness ecosystem.
             </p>
@@ -110,8 +109,8 @@ export default function Footer() {
             <h4 className="label-eyebrow text-gold">Reach Us</h4>
             <ul className="mt-5 space-y-4 text-sm text-ivory/70">
               <li className="flex gap-3"><MapPin className="text-gold shrink-0" strokeWidth={1.5} size={18} /> Wellness Lane, Pune, Maharashtra, India</li>
-              <li className="flex gap-3"><Phone className="text-gold shrink-0" strokeWidth={1.5} size={18} /> +91 98765 43210</li>
-              <li className="flex gap-3"><Mail className="text-gold shrink-0" strokeWidth={1.5} size={18} /> care@sparshpehla.com</li>
+              <li className="flex gap-3"><Phone className="text-gold shrink-0" strokeWidth={1.5} size={18} /> +91 89800 24245</li>
+              <li className="flex gap-3"><Mail className="text-gold shrink-0" strokeWidth={1.5} size={18} /> sparsh.pehla@gmail.com</li>
             </ul>
             <div className="mt-6 flex gap-3">
               {[Instagram, Facebook, Youtube].map((Icon, i) => (

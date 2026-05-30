@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import Logo from "./Logo";
 
 const NAV = [
   { to: "/", label: "Home" },
@@ -36,9 +37,7 @@ export default function Navbar() {
     >
       <nav className="container-px flex items-center justify-between">
         <Link to="/" data-testid="logo-link" className="flex items-center gap-2 group">
-          <span className="font-serif text-2xl md:text-[26px] font-semibold tracking-tight text-ink leading-none">
-            Sparsh<span className="text-gold"> Pehla</span>
-          </span>
+          <Logo size="md" />
         </Link>
 
         <ul className="hidden lg:flex items-center gap-8">
@@ -76,9 +75,7 @@ export default function Navbar() {
             </SheetTrigger>
             <SheetContent side="right" className="bg-ivory border-beige w-[300px]">
               <div className="flex flex-col h-full">
-                <span className="font-serif text-2xl font-semibold text-ink mb-8">
-                  Sparsh<span className="text-gold"> Pehla</span>
-                </span>
+                <Logo size="md" className="mb-8" />
                 <ul className="flex flex-col gap-5">
                   {NAV.map((item) => (
                     <li key={item.to}>

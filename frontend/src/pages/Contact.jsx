@@ -8,8 +8,8 @@ import SEO from "../components/SEO";
 
 const INFO = [
   { icon: MapPin, label: "Visit Us", value: "Wellness Lane, Pune, Maharashtra, India" },
-  { icon: Phone, label: "Call Us", value: "+91 98765 43210" },
-  { icon: Mail, label: "Email Us", value: "care@sparshpehla.com" },
+  { icon: Phone, label: "Call Us", value: "+91 89800 24245" },
+  { icon: Mail, label: "Email Us", value: "sparsh.pehla@gmail.com" },
   { icon: Clock, label: "Hours", value: "Mon–Sat · 9:00 AM – 7:00 PM" },
 ];
 
