@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import { CalendarIcon, Check, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
@@ -14,6 +15,7 @@ const TIMES = ["09:00 AM", "10:30 AM", "12:00 PM", "02:00 PM", "03:30 PM", "05:0
 const PERKS = ["Personalised, judgement-free guidance", "Care rooted in Indian tradition", "Certified, compassionate experts", "Flexible online & in-person sessions"];
 
 export default function BookConsultation() {
+  const { t } = useTranslation();
   const [services, setServices] = useState([]);
   const [date, setDate] = useState(null);
   const [form, setForm] = useState({ name: "", email: "", phone: "", service: "", preferred_time: "", message: "" });
@@ -51,8 +53,8 @@ export default function BookConsultation() {
         canonical={`${window.location.origin}/book`}
       />
       <PageHero
-        eyebrow="Book a Consultation"
-        title="Take the first gentle step"
+        eyebrow={t("book.eyebrow")}
+        title={t("book.hero_title")}
         subtitle="Schedule a personalised consultation and let us understand how we can best support you."
         image="wellness_program"
         crumbs={[{ label: "Book Consultation" }]}
@@ -86,7 +88,7 @@ export default function BookConsultation() {
                   <div className="w-16 h-16 mx-auto rounded-full bg-gold/15 flex items-center justify-center text-gold mb-5">
                     <Check size={30} strokeWidth={2} />
                   </div>
-                  <h3 className="font-serif text-2xl text-ink">Thank you, {form.name.split(" ")[0] || "dear"}!</h3>
+                  <h3 className="font-serif text-2xl text-ink">{t("book.success_title")}, {form.name.split(" ")[0] || "dear"}!</h3>
                   <p className="mt-3 text-ink-soft">Your consultation request has been received. Our team will reach out shortly to confirm your appointment.</p>
                 </div>
               ) : (
@@ -136,7 +138,7 @@ export default function BookConsultation() {
                   <textarea name="message" value={form.message} onChange={change} placeholder="Anything you'd like us to know? (optional)" rows={3} data-testid="booking-message" className={inputCls} />
 
                   <button type="submit" disabled={loading} data-testid="booking-submit" className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-gold px-8 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:bg-gold-dark hover:scale-[1.01] disabled:opacity-60">
-                    {loading ? "Submitting…" : <>Request Consultation <ArrowRight size={18} /></>}
+                    {loading ? "Submitting…" : <>{t("book.submit")} <ArrowRight size={18} /></>}
                   </button>
                 </form>
               )}

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { Reveal } from "../components/motion";
 import InquiryForm from "../components/InquiryForm";
@@ -7,14 +8,16 @@ import PageHero from "../components/PageHero";
 import SEO from "../components/SEO";
 import { LOCAL_BUSINESS, breadcrumb } from "../lib/seo";
 
-const INFO = [
-  { icon: MapPin, label: "Visit Us", value: "Kanha Gold B/s. New BPs, G-102, Dabhoi - Waghodia Ring Rd, nr. Ganesh Nagar, Suryanagar, Vadodara, Gujarat 390019" },
-  { icon: Phone, label: "Call Us", value: "+91 89800 24245" },
-  { icon: Mail, label: "Email Us", value: "sparsh.pehla@gmail.com" },
-  { icon: Clock, label: "Hours", value: "Mon–Sat · 9:00 AM – 7:00 PM" },
-];
-
 export default function Contact() {
+  const { t } = useTranslation();
+
+  const INFO = [
+    { icon: MapPin, label: t("contact.visit_us"), value: "Kanha Gold B/s. New BPs, G-102, Dabhoi - Waghodia Ring Rd, nr. Ganesh Nagar, Suryanagar, Vadodara, Gujarat 390019" },
+    { icon: Phone, label: t("contact.call_us"), value: "+91 89800 24245" },
+    { icon: Mail, label: t("contact.email_us"), value: "sparsh.pehla@gmail.com" },
+    { icon: Clock, label: t("contact.hours"), value: "Mon–Sat · 9:00 AM – 7:00 PM" },
+  ];
+
   return (
     <div data-testid="contact-page">
       <SEO
@@ -24,8 +27,8 @@ export default function Contact() {
         jsonLd={[LOCAL_BUSINESS, breadcrumb([{ name: "Home", url: "/" }, { name: "Contact Us" }])]}
       />
       <PageHero
-        eyebrow="Contact Us"
-        title="We'd love to hear from you"
+        eyebrow={t("contact.eyebrow")}
+        title={t("contact.hero_title")}
         subtitle="Whether you have a question or are ready to begin, our caring team is here for you."
         image="emotional_wellness"
         crumbs={[{ label: "Contact" }]}

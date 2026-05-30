@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getServices } from "../lib/api";
 import { StaggerGroup, StaggerItem } from "../components/motion";
 import ServiceCard from "../components/ServiceCard";
@@ -6,6 +7,7 @@ import PageHero from "../components/PageHero";
 import SEO from "../components/SEO";
 
 export default function Services() {
+  const { t } = useTranslation();
   const [services, setServices] = useState([]);
 
   useEffect(() => {
@@ -20,8 +22,8 @@ export default function Services() {
         canonical={`${window.location.origin}/services`}
       />
       <PageHero
-        eyebrow="Our Services"
-        title="Wellness woven through every chapter"
+        eyebrow={t("services.eyebrow")}
+        title={t("services.hero_title")}
         subtitle="From the first heartbeat to the joys of parenting, explore our complete ecosystem of nurturing care."
         image="wellness_program"
         crumbs={[{ label: "Services" }]}

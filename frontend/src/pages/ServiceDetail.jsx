@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Check, ArrowRight, ArrowLeft } from "lucide-react";
@@ -14,6 +15,7 @@ import { breadcrumb, SITE_URL } from "../lib/seo";
 import ContactCTA from "../components/ContactCTA";
 
 export default function ServiceDetail() {
+  const { t } = useTranslation();
   const { slug } = useParams();
   const navigate = useNavigate();
   const [service, setService] = useState(null);
@@ -188,7 +190,7 @@ export default function ServiceDetail() {
       <section className="section-py bg-ivory">
         <div className="container-px grid md:grid-cols-2 gap-12 items-start">
           <div>
-            <SectionHeading eyebrow="Get in Touch" title={`Interested in ${service.title}?`} subtitle="Share your details and our caring team will reach out to guide you personally." />
+            <SectionHeading eyebrow={t("services.inquiry_eyebrow")} title={`Interested in ${service.title}?`} subtitle="Share your details and our caring team will reach out to guide you personally." />
           </div>
           <div className="bg-warmivory rounded-2xl p-8 border border-beige">
             <InquiryForm defaultService={service.title} compact />

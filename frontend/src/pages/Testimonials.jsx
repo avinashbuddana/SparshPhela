@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Quote } from "lucide-react";
 import { getTestimonials, img } from "../lib/api";
 import { StaggerGroup, StaggerItem } from "../components/motion";
@@ -8,6 +9,7 @@ import SEO from "../components/SEO";
 import ContactCTA from "../components/ContactCTA";
 
 export default function Testimonials() {
+  const { t } = useTranslation();
   const [items, setItems] = useState([]);
   useEffect(() => {
     getTestimonials().then(setItems).catch(() => {});
@@ -21,8 +23,8 @@ export default function Testimonials() {
         canonical={`${window.location.origin}/testimonials`}
       />
       <PageHero
-        eyebrow="Mothers' Stories"
-        title="Heartfelt words from our families"
+        eyebrow={t("testimonials.eyebrow")}
+        title={t("testimonials.hero_title")}
         subtitle="Nothing means more to us than the trust of the mothers we care for. Here are their stories."
         image="mother_care"
         crumbs={[{ label: "Stories" }]}
