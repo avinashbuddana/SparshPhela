@@ -58,9 +58,6 @@ RUN rm -f /etc/nginx/sites-enabled/default \
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
-# Media uploads volume
-VOLUME ["/app/media"]
-
 EXPOSE 80
 
 CMD ["/start.sh"]
