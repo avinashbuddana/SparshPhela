@@ -1,54 +1,76 @@
-import { useEffect } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
-import { HOME } from "@/constants/testIds";
+import React from "react";
+import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
+import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { SmoothScroll, ScrollToTop } from "@/components/motion";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+import Home from "@/pages/Home";
+import About from "@/pages/About";
+import Services from "@/pages/Services";
+import ServiceDetail from "@/pages/ServiceDetail";
+import Blog from "@/pages/Blog";
+import BlogDetail from "@/pages/BlogDetail";
+import Gallery from "@/pages/Gallery";
+import Testimonials from "@/pages/Testimonials";
+import Contact from "@/pages/Contact";
+import BookConsultation from "@/pages/BookConsultation";
+import AdminLogin from "@/pages/admin/AdminLogin";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
+function PublicLayout() {
   return (
-    <div>
-      <header className="App-header">
-        <a
-          data-testid={HOME.emergentLink}
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
+    <>
+      <Navbar />
+      <main>
+        <Outlet />
+      </main>
+      <Footer />
+      <WhatsAppButton />
+    </>
   );
-};
+}
+
+function ProtectedRoute({ children }) {
+  const { user } = useAuth();
+  if (user === null) {
+    return <div className="min-h-screen flex items-center justify-center text-ink-muted">Loading…</div>;
+  }
+  if (user === false) return <Navigate to="/admin/login" replace />;
+  return children;
+}
 
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <SmoothScroll>
+            <Routes>
+              <Route element={<PublicLayout />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/services/:slug" element={<ServiceDetail />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:slug" element={<BlogDetail />} />
+                <Route path="/gallery" element={<Gallery />} />
+                <Route path="/testimonials" element={<Testimonials />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/book" element={<BookConsultation />} />
+              </Route>
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </SmoothScroll>
+          <Toaster position="top-center" richColors />
+        </BrowserRouter>
+      </AuthProvider>
     </div>
   );
 }
