@@ -1,0 +1,129 @@
+{
+  "project_name": "Sparsh Pehla",
+  "theme": "LIGHT",
+  "archetype": "Archetype 1 (Organic & Earthy) blended with Archetype 5 (Luxury)",
+  "vibe": "luxurious, nurturing, peaceful, emotionally comforting, premium, modern, trustworthy, feminine, and elegant",
+  "typography": {
+    "heading_font": "Playfair Display",
+    "body_font": "Outfit",
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-none font-medium",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl tracking-tight leading-snug font-medium",
+      "h3": "text-xl sm:text-2xl tracking-tight font-medium",
+      "h4": "text-lg sm:text-xl font-medium",
+      "body": "text-base leading-relaxed text-stone-700",
+      "small_label": "text-xs tracking-[0.2em] uppercase text-stone-500 font-semibold"
+    },
+    "notes": "Use tracking-tight for all headings. Never use Inter. Apply Playfair Display for headings and Outfit for body text."
+  },
+  "colors": {
+    "background": {
+      "main": "#FDFBF7",
+      "warm_ivory": "#FAF8F5",
+      "soft_beige": "#F3EFEA",
+      "floral_white": "#FFFAF0"
+    },
+    "text": {
+      "primary": "#2D2A26",
+      "secondary": "#5C5751",
+      "muted": "#8A847C"
+    },
+    "accents": {
+      "elegant_gold": "#C5A880",
+      "pastel_peach": "#F5E3D7",
+      "soft_lavender": "#E8E6F1",
+      "muted_earth": "#8B7D6B",
+      "sage_green": "#A2A89A"
+    },
+    "interactive": {
+      "cta_bg": "#C5A880",
+      "cta_hover": "#B3956D",
+      "cta_text": "#FFFFFF",
+      "link_hover": "#8B7D6B"
+    }
+  },
+  "surfaces_and_shadows": {
+    "glassmorphism": "backdrop-blur-xl bg-white/60 border border-white/40 shadow-[0_8px_32px_rgba(139,125,107,0.08)]",
+    "cards": "bg-white border border-[#F3EFEA] shadow-sm rounded-2xl overflow-hidden",
+    "hover_effects": "transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-[#C5A880]/30",
+    "overlays": "bg-gradient-to-t from-[#2D2A26]/60 via-[#2D2A26]/20 to-transparent"
+  },
+  "spacing_and_layout": {
+    "section_padding": "py-20 md:py-32",
+    "container": "max-w-7xl mx-auto px-6 md:px-12 lg:px-20",
+    "grid_gap": "gap-8 md:gap-12",
+    "bento_grid": "grid grid-cols-1 md:grid-cols-12 gap-6",
+    "hero_min_height": "min-h-[85vh]"
+  },
+  "motion_and_animations": {
+    "library": "framer-motion",
+    "page_transition": {
+      "initial": { "opacity": 0, "y": 20 },
+      "animate": { "opacity": 1, "y": 0 },
+      "exit": { "opacity": 0, "y": -20 },
+      "transition": { "duration": 0.6, "ease": [0.22, 1, 0.36, 1] }
+    },
+    "stagger_children": {
+      "transition": { "staggerChildren": 0.1 }
+    },
+    "image_reveal": "Use framer-motion to reveal images with a slow scale-down effect (1.1 to 1) combined with a soft blur-to-clear transition",
+    "scroll_animations": "Use framer-motion 'whileInView' for elegant fade-up animations on sections as the user scrolls. Use lenis for smooth scrolling."
+  },
+  "components": {
+    "buttons": "Rounded-full, px-8 py-3. Use elegant_gold for primary buttons. Add subtle scale on hover.",
+    "inputs": "Shadcn UI customized: rounded-xl, bg-white/50, border-[#F3EFEA], focus:ring-[#C5A880]/50",
+    "navigation": "Sticky header with glassmorphism surface. Must have logo, navigation links, and a primary CTA. Links should have a subtle underline animation on hover.",
+    "footer": "Generous padding (py-32). Darker earth tone background (#2D2A26) with text in Warm Ivory to create contrast at the end of the page.",
+    "icons": "Use lucide-react with thin stroke widths (strokeWidth={1.5}) to match the elegant serif aesthetic."
+  },
+  "media": {
+    "hero_background": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/1ab0c3b0-35ba-458a-8e48-0ab678630e07/images/e6ac8bfe12c4fb8afa28dfae60013fefae3182a0341af903e2133b395609defe.png",
+      "description": "Wide-angle cinematic background, warm ivory and pastel peach tones, soft light gradients, subtle elegant gold accents, smooth organic curves"
+    },
+    "abstract_nurture": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/1ab0c3b0-35ba-458a-8e48-0ab678630e07/images/615b0ae7b914f079cffadcfc200816989be6caf7c128d0c2fe296b900021d4a0.png",
+      "description": "Abstract flowing silk in soft lavender and warm beige, delicate translucent layers"
+    },
+    "beige_gold_texture": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/1ab0c3b0-35ba-458a-8e48-0ab678630e07/images/4d1bf3ef42374c360bab5b404ea5d1da177ed2a197d4af3e7ffa07200f6a52de.png",
+      "description": "Minimalist soft beige and gold texture background, fine grain paper texture"
+    },
+    "floral_shadow_bg": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/1ab0c3b0-35ba-458a-8e48-0ab678630e07/images/6e687b9b1c3e0fcd7faa4eb16a5732a6bf425901e76becb89e52a8f7b792273c.png",
+      "description": "Cinematic soft glowing light, delicate floral shadows cast on warm ivory wall"
+    },
+    "photography": [
+      {
+        "category": "mother_newborn",
+        "url": "https://images.pexels.com/photos/4101057/pexels-photo-4101057.jpeg",
+        "description": "Peaceful scene with a mother and sleeping newborn"
+      },
+      {
+        "category": "mother_feeding",
+        "url": "https://images.pexels.com/photos/4101056/pexels-photo-4101056.jpeg",
+        "description": "Mother gently feeding her newborn wrapped in a cozy blanket"
+      },
+      {
+        "category": "pregnancy_yoga",
+        "url": "https://images.pexels.com/photos/13849185/pexels-photo-13849185.jpeg",
+        "description": "Calm pregnant woman performing yoga in serene setting"
+      },
+      {
+        "category": "wellness_spa",
+        "url": "https://images.unsplash.com/photo-1564545801690-85554cbfe500?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwyfHxsdXh1cnklMjBheXVydmVkYSUyMHdlbGxuZXNzfGVufDB8fHx8MTc4MDEyNjA4M3ww&ixlib=rb-4.1.0&q=85",
+        "description": "Luxury ayurveda wellness setting with comfortable chairs"
+      }
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Ensure pure HTML + Tailwind CSS is used for structural and visual layouts (especially marketing sections).",
+    "Use Shadcn UI primarily for complex interactive elements (forms, select, calendar). Customize them to match the premium brand aesthetic.",
+    "Add 'data-testid' to all interactive elements for robust testing.",
+    "Implement smooth scrolling using Lenis.",
+    "Avoid center-aligning everything; utilize varied bento grids and asymmetric layouts to create visual tension and elegance.",
+    "Use the provided image URLs exclusively. Never use placeholder images.",
+    "Implement glassmorphism selectively for sticky navigation and premium feature cards, ensuring contrast is maintained.",
+    "Use text shadows or gradient overlays to ensure text readability over images."
+  ]
+}
