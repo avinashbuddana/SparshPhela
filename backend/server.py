@@ -140,6 +140,13 @@ def clean(doc: dict) -> dict:
 ADMIN_COLLECTIONS = {"services", "blogs", "testimonials", "faqs", "gallery"}
 
 
+def oid(item_id: str) -> ObjectId:
+    try:
+        return ObjectId(item_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid id")
+
+
 # ----------------------------------------------------------------------------
 # Auth routes
 # ----------------------------------------------------------------------------
@@ -285,13 +292,13 @@ async def admin_inquiries(user: dict = Depends(get_current_user)):
 
 @api_router.patch("/admin/inquiries/{item_id}")
 async def update_inquiry(item_id: str, data: StatusUpdate, user: dict = Depends(get_current_user)):
-    await db.inquiries.update_one({"_id": ObjectId(item_id)}, {"$set": {"status": data.status}})
+    await db.inquiries.update_one({"_id": oid(item_id)}, {"$set": {"status": data.status}})
     return {"message": "Updated"}
 
 
 @api_router.delete("/admin/inquiries/{item_id}")
 async def delete_inquiry(item_id: str, user: dict = Depends(get_current_user)):
-    await db.inquiries.delete_one({"_id": ObjectId(item_id)})
+    await db.inquiries.delete_one({"_id": oid(item_id)})
     return {"message": "Deleted"}
 
 
@@ -303,13 +310,13 @@ async def admin_bookings(user: dict = Depends(get_current_user)):
 
 @api_router.patch("/admin/bookings/{item_id}")
 async def update_booking(item_id: str, data: StatusUpdate, user: dict = Depends(get_current_user)):
-    await db.bookings.update_one({"_id": ObjectId(item_id)}, {"$set": {"status": data.status}})
+    await db.bookings.update_one({"_id": oid(item_id)}, {"$set": {"status": data.status}})
     return {"message": "Updated"}
 
 
 @api_router.delete("/admin/bookings/{item_id}")
 async def delete_booking(item_id: str, user: dict = Depends(get_current_user)):
-    await db.bookings.delete_one({"_id": ObjectId(item_id)})
+    await db.bookings.delete_one({"_id": oid(item_id)})
     return {"message": "Deleted"}
 
 
@@ -338,8 +345,8 @@ async def admin_update(collection: str, item_id: str, payload: dict[str, Any], u
         raise HTTPException(status_code=404, detail="Unknown collection")
     payload.pop("id", None)
     payload.pop("_id", None)
-    await db[collection].update_one({"_id": ObjectId(item_id)}, {"$set": payload})
-    doc = await db[collection].find_one({"_id": ObjectId(item_id)})
+    await db[collection].update_one({"_id": oid(item_id)}, {"$set": payload})
+    doc = await db[collection].find_one({"_id": oid(item_id)})
     return clean(doc)
 
 
@@ -347,7 +354,7 @@ async def admin_update(collection: str, item_id: str, payload: dict[str, Any], u
 async def admin_delete(collection: str, item_id: str, user: dict = Depends(get_current_user)):
     if collection not in ADMIN_COLLECTIONS:
         raise HTTPException(status_code=404, detail="Unknown collection")
-    await db[collection].delete_one({"_id": ObjectId(item_id)})
+    await db[collection].delete_one({"_id": oid(item_id)})
     return {"message": "Deleted"}
 
 

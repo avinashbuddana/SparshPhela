@@ -49,15 +49,15 @@ export default function Home() {
       <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden">
         <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0 z-0">
           <img src={img("hero")} alt="A serene expecting mother" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-ivory/90 via-ivory/55 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-ivory/95 via-ivory/70 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-ivory/70 via-transparent to-transparent" />
         </motion.div>
 
         <div className="container-px relative z-10 pt-24">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }} className="max-w-2xl">
-            <span className="label-eyebrow">Maternity & Parenting Wellness</span>
-            <h1 className="mt-5 font-serif text-4xl sm:text-5xl lg:text-[68px] leading-[1.05] tracking-tight font-medium text-ink text-balance">
-              Supporting Every Step of <span className="italic text-gold">Motherhood</span>
+            <span className="text-xs tracking-[0.25em] uppercase text-gold-dark font-bold">Maternity &amp; Parenting Wellness</span>
+            <h1 className="mt-5 font-serif text-4xl sm:text-5xl lg:text-[68px] leading-[1.05] tracking-tight font-medium text-ink text-balance [text-shadow:0_1px_24px_rgba(253,251,247,0.8)]">
+              Supporting Every Step of <span className="italic text-gold-dark font-semibold">Motherhood</span>
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-ink-soft max-w-xl">
               A peaceful, premium wellness ecosystem nurturing mothers and families — from the first heartbeat to the joys of parenting, with warmth and timeless Indian wisdom.
