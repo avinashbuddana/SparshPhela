@@ -14,7 +14,7 @@ function IgIcon({ size = 20 }) {
 }
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { img, getServices, getTestimonials, getBlogs, getFaqs } from "../lib/api";
-import { Reveal, StaggerGroup, StaggerItem } from "../components/motion";
+import { Reveal, SlideIn, TextReveal, CountUp, Float, StaggerGroup, StaggerItem } from "../components/motion";
 import SectionHeading from "../components/SectionHeading";
 import ServiceCard from "../components/ServiceCard";
 import TestimonialsCarousel from "../components/TestimonialsCarousel";
@@ -71,22 +71,49 @@ export default function Home() {
         </motion.div>
 
         <div className="container-px relative z-10 pt-24">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }} className="max-w-2xl">
-            <span className="text-xs tracking-[0.25em] uppercase text-gold-dark font-bold">Maternity &amp; Parenting Wellness</span>
-            <h1 className="mt-5 font-serif text-4xl sm:text-5xl lg:text-[68px] leading-[1.05] tracking-tight font-medium text-ink text-balance [text-shadow:0_1px_24px_rgba(253,251,247,0.8)]">
-              Supporting Every Step of <span className="italic text-gold-dark font-semibold">Motherhood</span>
-            </h1>
-            <p className="mt-6 text-lg leading-relaxed text-ink-soft max-w-xl">
+          <motion.div
+            className="max-w-2xl"
+            initial="hidden"
+            animate="show"
+            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } } }}
+          >
+            <motion.span
+              variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } } }}
+              className="text-xs tracking-[0.25em] uppercase text-gold-dark font-bold block"
+            >
+              Maternity &amp; Parenting Wellness
+            </motion.span>
+
+            <motion.h1
+              variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.95, ease: [0.16, 1, 0.3, 1] } } }}
+              className="mt-5 font-serif text-4xl sm:text-5xl lg:text-[68px] leading-[1.05] tracking-tight font-medium text-ink text-balance [text-shadow:0_1px_24px_rgba(253,251,247,0.8)]"
+            >
+              Supporting Every Step of{" "}
+              <span className="italic text-gold-dark font-semibold">Motherhood</span>
+            </motion.h1>
+
+            <motion.p
+              variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] } } }}
+              className="mt-6 text-lg leading-relaxed text-ink-soft max-w-xl"
+            >
               A peaceful, premium wellness ecosystem nurturing mothers and families — from the first heartbeat to the joys of parenting, with warmth and timeless Indian wisdom.
-            </p>
-            <div className="mt-9 flex flex-wrap gap-4">
-              <Link to="/book" data-testid="hero-book-cta" className="inline-flex items-center gap-2 rounded-full bg-gold px-8 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:bg-gold-dark hover:scale-[1.03] hover:shadow-xl">
-                Book a Consultation <ArrowRight size={18} strokeWidth={2} />
-              </Link>
-              <Link to="/services" data-testid="hero-services-cta" className="inline-flex items-center gap-2 rounded-full border border-ink/15 px-8 py-3.5 text-sm font-medium text-ink transition-all duration-300 hover:border-gold hover:text-gold">
-                Explore Services
-              </Link>
-            </div>
+            </motion.p>
+
+            <motion.div
+              variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } } }}
+              className="mt-9 flex flex-wrap gap-4"
+            >
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <Link to="/book" data-testid="hero-book-cta" className="inline-flex items-center gap-2 rounded-full bg-gold px-8 py-3.5 text-sm font-medium text-white shadow-lg shadow-gold/25 hover:bg-gold-dark hover:shadow-gold/40 transition-all duration-300">
+                  Book a Consultation <ArrowRight size={18} strokeWidth={2} />
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <Link to="/services" data-testid="hero-services-cta" className="inline-flex items-center gap-2 rounded-full border border-ink/15 px-8 py-3.5 text-sm font-medium text-ink hover:border-gold hover:text-gold transition-all duration-300">
+                  Explore Services
+                </Link>
+              </motion.div>
+            </motion.div>
           </motion.div>
         </div>
 
@@ -100,9 +127,18 @@ export default function Home() {
       <section className="section-py bg-ivory">
         <div className="container-px text-center max-w-4xl mx-auto">
           <Reveal>
-            <Sparkles className="mx-auto text-gold mb-6" strokeWidth={1.2} size={32} />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <Sparkles className="mx-auto text-gold mb-6" strokeWidth={1.2} size={32} />
+            </motion.div>
             <p className="font-serif text-2xl sm:text-3xl lg:text-[40px] leading-[1.35] tracking-tight text-ink text-balance">
-              Motherhood is not just a moment — it is a <span className="text-gold italic">journey of becoming</span>. We are here to hold your hand through every tender, transformative step.
+              <TextReveal stagger={0.03}>Motherhood is not just a moment — it is a</TextReveal>
+              {" "}<span className="text-gold italic"><TextReveal delay={0.5} stagger={0.05}>journey of becoming</TextReveal></span>.{" "}
+              <TextReveal delay={0.8} stagger={0.03}>We are here to hold your hand through every tender, transformative step.</TextReveal>
             </p>
           </Reveal>
         </div>
@@ -111,17 +147,21 @@ export default function Home() {
       {/* ============ ABOUT PREVIEW ============ */}
       <section className="section-py bg-warmivory">
         <div className="container-px grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <Reveal className="relative">
+          <SlideIn direction="left" className="relative">
             <div className="relative rounded-[2rem] overflow-hidden shadow-xl">
               <img src={img("about")} alt="About Sparsh Pehla" className="w-full h-[520px] object-cover" />
             </div>
-            <div className="absolute -bottom-8 -right-4 md:right-8 glass rounded-2xl p-6 shadow-lg max-w-[220px]">
-              <p className="font-serif text-4xl text-gold">14+</p>
-              <p className="text-sm text-ink-soft mt-1">Wellness services across your motherhood journey</p>
-            </div>
-          </Reveal>
+            <Float amount={8} duration={5} className="absolute -bottom-8 -right-4 md:right-8">
+              <div className="glass rounded-2xl p-6 shadow-lg max-w-[220px]">
+                <p className="font-serif text-4xl text-gold">
+                  <CountUp to={14} suffix="+" duration={1.5} />
+                </p>
+                <p className="text-sm text-ink-soft mt-1">Wellness services across your motherhood journey</p>
+              </div>
+            </Float>
+          </SlideIn>
 
-          <div>
+          <SlideIn direction="right">
             <SectionHeading
               eyebrow="About Sparsh Pehla"
               title="A sanctuary of care for mothers and families"
@@ -140,7 +180,7 @@ export default function Home() {
                 Our full story <ArrowUpRight size={16} />
               </Link>
             </Reveal>
-          </div>
+          </SlideIn>
         </div>
       </section>
 
