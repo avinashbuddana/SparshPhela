@@ -5,26 +5,20 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  # REACT_APP_BACKEND_URL is intentionally empty here.
-  # Netlify proxies /api/* to the Railway backend (see redirects below),
-  # so all API calls use relative URLs — no CORS, no origin issues.
   REACT_APP_BACKEND_URL = ""
-  # Update this once your custom domain is live:
-  REACT_APP_SITE_URL = "https://sparshpehla.netlify.app"
+  REACT_APP_SITE_URL    = "https://sparshpehla.netlify.app"
 
 # ── Proxy: /api/* → Railway backend ─────────────────────────────────────────
-# Replace YOUR_RAILWAY_URL with your actual Railway backend URL, e.g.:
-#   https://sparsh-backend.up.railway.app
 [[redirects]]
   from   = "/api/*"
-  to     = "https://YOUR_RAILWAY_URL/api/:splat"
+  to     = "https://sparshphela-production.up.railway.app/api/:splat"
   status = 200
   force  = true
 
 # ── Proxy: dynamic sitemap ───────────────────────────────────────────────────
 [[redirects]]
   from   = "/sitemap.xml"
-  to     = "https://YOUR_RAILWAY_URL/sitemap.xml"
+  to     = "https://sparshphela-production.up.railway.app/sitemap.xml"
   status = 200
   force  = true
 
