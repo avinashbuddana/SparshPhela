@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <!-- warm cream background circle -->
+  <circle cx="24" cy="24" r="24" fill="#FDF8F2"/>
+  <!-- brand gold accent ring -->
+  <circle cx="24" cy="24" r="24" fill="none" stroke="#C9A96E" stroke-width="1.5"/>
+
+  <!-- mother + baby line art (matches Logo.jsx MotherIcon) -->
+  <g stroke="#B3956D" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+    <!-- mother head -->
+    <circle cx="18" cy="12" r="5"/>
+    <!-- mother hair sweep -->
+    <path d="M13.5 9.5 C11 13 11 17 13 20"/>
+    <!-- mother torso -->
+    <path d="M10.5 40 C9.5 28 12.5 21 18 21 C22 21 25 24 26 29"/>
+    <!-- cradling arm -->
+    <path d="M26 29 C29 26 35 27 38 32 C40 35 39 40 35 41"/>
+    <!-- baby head -->
+    <circle cx="30.5" cy="32" r="3.6"/>
+  </g>
+</svg>
