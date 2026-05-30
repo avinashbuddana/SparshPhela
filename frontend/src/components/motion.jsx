@@ -171,6 +171,29 @@ export function StaggerItem({ children, className = "", y = 28 }) {
   );
 }
 
+// ── ImageReveal — clip-path curtain wipe ─────────────────────────────────────
+export function ImageReveal({ src, alt, className = "", imgClassName = "" }) {
+  return (
+    <motion.div
+      className={`overflow-hidden ${className}`}
+      initial={{ clipPath: "inset(0 100% 0 0)" }}
+      whileInView={{ clipPath: "inset(0 0% 0 0)" }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <motion.img
+        src={src}
+        alt={alt}
+        className={`w-full h-full object-cover ${imgClassName}`}
+        initial={{ scale: 1.12 }}
+        whileInView={{ scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+      />
+    </motion.div>
+  );
+}
+
 // ── PageTransition — fade between routes ─────────────────────────────────────
 export function PageTransition({ children }) {
   return (

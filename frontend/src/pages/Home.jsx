@@ -14,7 +14,7 @@ function IgIcon({ size = 20 }) {
 }
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { img, getServices, getTestimonials, getBlogs, getFaqs } from "../lib/api";
-import { Reveal, SlideIn, TextReveal, CountUp, Float, StaggerGroup, StaggerItem } from "../components/motion";
+import { Reveal, SlideIn, TextReveal, CountUp, Float, ImageReveal, StaggerGroup, StaggerItem } from "../components/motion";
 import SectionHeading from "../components/SectionHeading";
 import ServiceCard from "../components/ServiceCard";
 import TestimonialsCarousel from "../components/TestimonialsCarousel";
@@ -89,7 +89,7 @@ export default function Home() {
               className="mt-5 font-serif text-4xl sm:text-5xl lg:text-[68px] leading-[1.05] tracking-tight font-medium text-ink text-balance [text-shadow:0_1px_24px_rgba(253,251,247,0.8)]"
             >
               Supporting Every Step of{" "}
-              <span className="italic text-gold-dark font-semibold">Motherhood</span>
+              <span className="italic font-semibold gradient-text">Motherhood</span>
             </motion.h1>
 
             <motion.p
@@ -147,10 +147,13 @@ export default function Home() {
       {/* ============ ABOUT PREVIEW ============ */}
       <section className="section-py bg-warmivory">
         <div className="container-px grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <SlideIn direction="left" className="relative">
-            <div className="relative rounded-[2rem] overflow-hidden shadow-xl">
-              <img src={img("about")} alt="About Sparsh Pehla" className="w-full h-[520px] object-cover" />
-            </div>
+          <div className="relative">
+            <ImageReveal
+              src={img("about")}
+              alt="About Sparsh Pehla"
+              className="relative rounded-[2rem] shadow-xl h-[520px]"
+              imgClassName="h-[520px]"
+            />
             <Float amount={8} duration={5} className="absolute -bottom-8 -right-4 md:right-8">
               <div className="glass rounded-2xl p-6 shadow-lg max-w-[220px]">
                 <p className="font-serif text-4xl text-gold">
@@ -159,7 +162,7 @@ export default function Home() {
                 <p className="text-sm text-ink-soft mt-1">Wellness services across your motherhood journey</p>
               </div>
             </Float>
-          </SlideIn>
+          </div>
 
           <SlideIn direction="right">
             <SectionHeading
