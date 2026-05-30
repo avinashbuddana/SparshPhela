@@ -4,7 +4,7 @@
   publish = "build"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
   # REACT_APP_BACKEND_URL is intentionally empty here.
   # Netlify proxies /api/* to the Railway backend (see redirects below),
   # so all API calls use relative URLs — no CORS, no origin issues.
