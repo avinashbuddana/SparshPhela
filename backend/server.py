@@ -2,9 +2,11 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / ".env")
+load_dotenv(ROOT_DIR / ".env")          # backend/.env (local override)
+load_dotenv(ROOT_DIR.parent / ".env")   # project root .env
 
 import os
+import re
 import logging
 from datetime import datetime, timezone, timedelta
 from typing import Optional, Annotated, Any
@@ -12,7 +14,7 @@ from typing import Optional, Annotated, Any
 import bcrypt
 import jwt
 from bson import ObjectId
-from fastapi import FastAPI, APIRouter, Request, Response, HTTPException, Depends
+from fastapi import FastAPI, APIRouter, Request, Response, HTTPException, Depends, UploadFile, File, Form
 from fastapi.responses import FileResponse, RedirectResponse
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -359,18 +361,49 @@ async def admin_delete(collection: str, item_id: str, user: dict = Depends(get_c
 
 
 # ----------------------------------------------------------------------------
-# Media serving (AI generated images with stock fallback)
+# Media serving and upload
 # ----------------------------------------------------------------------------
+_EXT_TYPES = {"png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg", "webp": "image/webp"}
+
 @api_router.get("/media/{key}")
 async def get_media(key: str):
-    key = key.replace(".png", "").replace("/", "")
-    file_path = MEDIA_DIR / f"{key}.png"
-    if file_path.exists():
-        return FileResponse(file_path, media_type="image/png")
-    fallback = seed_data.MEDIA_FALLBACKS.get(key)
+    key = key.replace("/", "")
+    base = re.sub(r'\.(png|jpg|jpeg|webp)$', '', key, flags=re.IGNORECASE)
+    for ext in ("png", "jpg", "jpeg", "webp"):
+        fp = MEDIA_DIR / f"{base}.{ext}"
+        if fp.exists():
+            return FileResponse(fp, media_type=_EXT_TYPES[ext])
+    fallback = seed_data.MEDIA_FALLBACKS.get(base)
     if fallback:
         return RedirectResponse(fallback)
     raise HTTPException(status_code=404, detail="Image not found")
+
+
+@api_router.post("/admin/media/upload")
+async def upload_media(
+    file: UploadFile = File(...),
+    key: str = Form(None),
+    user: dict = Depends(get_current_user),
+):
+    filename = file.filename or "upload.png"
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else "png"
+    if ext not in _EXT_TYPES:
+        raise HTTPException(status_code=400, detail="Only PNG, JPG, JPEG, WebP files are allowed")
+
+    if key:
+        safe_key = re.sub(r'[^a-z0-9_-]', '_', key.lower().strip())
+    else:
+        safe_key = re.sub(r'[^a-z0-9_-]', '_', filename.rsplit(".", 1)[0].lower())
+
+    if not safe_key:
+        raise HTTPException(status_code=400, detail="Invalid file name")
+
+    save_path = MEDIA_DIR / f"{safe_key}.{ext}"
+    content = await file.read()
+    with open(save_path, "wb") as f:
+        f.write(content)
+
+    return {"key": safe_key, "url": f"/api/media/{safe_key}"}
 
 
 @api_router.get("/")
@@ -459,6 +492,66 @@ async def shutdown():
 
 
 app.include_router(api_router)
+
+# ----------------------------------------------------------------------------
+# SEO: robots.txt + sitemap.xml  (served at root, no /api/ prefix)
+# ----------------------------------------------------------------------------
+SITE_URL = os.environ.get("SITE_URL", "https://sparshpehla.com")
+
+@app.get("/robots.txt", response_class=Response)
+async def robots_txt():
+    content = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /admin\n"
+        "Disallow: /admin/\n"
+        "Disallow: /api/\n"
+        f"Sitemap: {SITE_URL}/sitemap.xml\n"
+    )
+    return Response(content=content, media_type="text/plain")
+
+
+@app.get("/sitemap.xml", response_class=Response)
+async def sitemap_xml():
+    static_pages = [
+        ("", "1.0", "weekly"),
+        ("about", "0.8", "monthly"),
+        ("services", "0.9", "weekly"),
+        ("blog", "0.9", "daily"),
+        ("gallery", "0.6", "monthly"),
+        ("testimonials", "0.6", "monthly"),
+        ("contact", "0.7", "monthly"),
+        ("book", "0.8", "monthly"),
+    ]
+
+    services = await db.services.find({}, {"slug": 1, "updated_at": 1}).to_list(100)
+    blogs    = await db.blogs.find({},    {"slug": 1, "created_at": 1}).to_list(500)
+
+    def url_tag(loc, priority, changefreq, lastmod=None):
+        lm = f"\n    <lastmod>{lastmod[:10]}</lastmod>" if lastmod else ""
+        return (
+            f"  <url>\n"
+            f"    <loc>{loc}</loc>{lm}\n"
+            f"    <changefreq>{changefreq}</changefreq>\n"
+            f"    <priority>{priority}</priority>\n"
+            f"  </url>"
+        )
+
+    parts = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+
+    for path, priority, freq in static_pages:
+        loc = f"{SITE_URL}/{path}" if path else SITE_URL
+        parts.append(url_tag(loc, priority, freq))
+
+    for s in services:
+        parts.append(url_tag(f"{SITE_URL}/services/{s['slug']}", "0.8", "monthly"))
+
+    for b in blogs:
+        parts.append(url_tag(f"{SITE_URL}/blog/{b['slug']}", "0.7", "monthly", b.get("created_at")))
+
+    parts.append("</urlset>")
+    return Response(content="\n".join(parts), media_type="application/xml")
+
 
 app.add_middleware(
     CORSMiddleware,

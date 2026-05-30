@@ -1,12 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Heart, Leaf, Star, Users, ArrowRight } from "lucide-react";
+import { Heart, Leaf, Star, Users } from "lucide-react";
 import { img } from "../lib/api";
 import { Reveal, StaggerGroup, StaggerItem } from "../components/motion";
 import SectionHeading from "../components/SectionHeading";
 import PageHero from "../components/PageHero";
 import TestimonialsCarousel from "../components/TestimonialsCarousel";
 import SEO from "../components/SEO";
+import { ORGANIZATION, breadcrumb } from "../lib/seo";
+import ContactCTA from "../components/ContactCTA";
 
 const VALUES = [
   { icon: Heart, title: "Compassion", desc: "We lead with empathy, meeting every mother where she is — without judgement." },
@@ -22,7 +23,12 @@ const STATS = [
 export default function About() {
   return (
     <div data-testid="about-page">
-      <SEO title="About Us" description="Sparsh Pehla blends modern wellness with nurturing Indian traditions to support mothers and families." />
+      <SEO
+        title="About Sparsh Pehla — Maternity & Wellness Centre in Vadodara"
+        description="Sparsh Pehla is Vadodara's trusted luxury maternity and parenting wellness centre. We blend modern wellness science with timeless Indian traditions to support mothers and families at every step."
+        canonical={`${window.location.origin}/about`}
+        jsonLd={[ORGANIZATION, breadcrumb([{ name: "Home", url: "/" }, { name: "About Us" }])]}
+      />
       <PageHero
         eyebrow="Our Story"
         title="Born from love, built for every mother"
@@ -104,17 +110,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="section-py bg-warmivory">
-        <div className="container-px text-center">
-          <Reveal>
-            <h2 className="font-serif text-3xl md:text-4xl text-ink">Ready to begin your journey?</h2>
-            <Link to="/book" className="mt-8 inline-flex items-center gap-2 rounded-full bg-gold px-8 py-3.5 text-sm font-medium text-white hover:bg-gold-dark hover:scale-[1.03] transition-all">
-              Book a Consultation <ArrowRight size={18} />
-            </Link>
-          </Reveal>
-        </div>
-      </section>
+      <ContactCTA title="Ready to begin your wellness journey?" subtitle="Our caring team is here for you — book a consultation, call us, or simply ping us on WhatsApp." />
     </div>
   );
 }

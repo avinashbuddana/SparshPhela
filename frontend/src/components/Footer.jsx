@@ -1,6 +1,24 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Instagram, Facebook, Youtube, MapPin, Phone, Mail, ArrowRight } from "lucide-react";
+import { MapPin, Phone, Mail, ArrowRight } from "lucide-react";
+
+function IgIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+function FbIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
 import { toast } from "sonner";
 import { postNewsletter, formatApiErrorDetail } from "../lib/api";
 import Logo from "./Logo";
@@ -108,23 +126,21 @@ export default function Footer() {
           <div className="md:col-span-3">
             <h4 className="label-eyebrow text-gold">Reach Us</h4>
             <ul className="mt-5 space-y-4 text-sm text-ivory/70">
-              <li className="flex gap-3"><MapPin className="text-gold shrink-0" strokeWidth={1.5} size={18} /> Wellness Lane, Pune, Maharashtra, India</li>
+              <li className="flex gap-3"><MapPin className="text-gold shrink-0" strokeWidth={1.5} size={18} /> Kanha Gold B/s. New BPs, G-102, Dabhoi - Waghodia Ring Rd, nr. Ganesh Nagar, Suryanagar, Vadodara, Gujarat 390019</li>
               <li className="flex gap-3"><Phone className="text-gold shrink-0" strokeWidth={1.5} size={18} /> +91 89800 24245</li>
               <li className="flex gap-3"><Mail className="text-gold shrink-0" strokeWidth={1.5} size={18} /> sparsh.pehla@gmail.com</li>
             </ul>
             <div className="mt-6 flex gap-3">
-              {[Instagram, Facebook, Youtube].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full border border-ivory/20 flex items-center justify-center text-ivory/70 hover:bg-gold hover:text-white hover:border-gold transition-all duration-300"
-                  aria-label="social link"
-                >
-                  <Icon size={18} strokeWidth={1.5} />
-                </a>
-              ))}
+              <a href="https://www.instagram.com/sparsh.pehla/" target="_blank" rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full border border-ivory/20 flex items-center justify-center text-ivory/70 hover:bg-gold hover:text-white hover:border-gold transition-all duration-300"
+                aria-label="Follow us on Instagram">
+                <IgIcon />
+              </a>
+              <a href="https://www.facebook.com/p/SparshPehla-61579467998471/" target="_blank" rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full border border-ivory/20 flex items-center justify-center text-ivory/70 hover:bg-gold hover:text-white hover:border-gold transition-all duration-300"
+                aria-label="Follow us on Facebook">
+                <FbIcon />
+              </a>
             </div>
           </div>
         </div>

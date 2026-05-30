@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+
+# Sitemap is served via Netlify proxy → Railway backend
+Sitemap: https://sparshpehla.com/sitemap.xml

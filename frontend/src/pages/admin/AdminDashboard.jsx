@@ -1,13 +1,17 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { LogOut, Inbox, CalendarCheck, Users, FileText, Sparkles, MessageSquare, MoreVertical, Trash2, ExternalLink } from "lucide-react";
+import {
+  LogOut, Inbox, CalendarCheck, Users, FileText, Sparkles,
+  MessageSquare, MoreVertical, Trash2, ExternalLink, BookOpen, Pencil,
+} from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../../components/ui/tabs";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../components/ui/dropdown-menu";
 import { Badge } from "../../components/ui/badge";
 import { toast } from "sonner";
 import { useAuth } from "../../context/AuthContext";
-import { api } from "../../lib/api";
+import { api, img } from "../../lib/api";
 import SEO from "../../components/SEO";
+import AdminBlogForm from "./AdminBlogForm";
 
 const STATUS_COLORS = {
   new: "bg-gold/15 text-gold-dark", pending: "bg-gold/15 text-gold-dark",
@@ -34,12 +38,15 @@ export default function AdminDashboard() {
   const [inquiries, setInquiries] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [subscribers, setSubscribers] = useState([]);
+  const [blogs, setBlogs] = useState([]);
+  const [blogForm, setBlogForm] = useState(null); // null=closed | {}=new | blog=edit
 
   const loadAll = useCallback(() => {
     api.get("/admin/stats").then((r) => setStats(r.data)).catch(() => {});
     api.get("/admin/inquiries").then((r) => setInquiries(r.data)).catch(() => {});
     api.get("/admin/bookings").then((r) => setBookings(r.data)).catch(() => {});
     api.get("/admin/newsletter").then((r) => setSubscribers(r.data)).catch(() => {});
+    api.get("/blogs").then((r) => setBlogs(r.data)).catch(() => {});
   }, []);
 
   useEffect(() => { loadAll(); }, [loadAll]);
@@ -49,26 +56,46 @@ export default function AdminDashboard() {
     toast.success("Status updated");
     loadAll();
   };
+
   const remove = async (type, id) => {
     await api.delete(`/admin/${type}/${id}`);
     toast.success("Deleted");
     loadAll();
   };
 
-  const doLogout = async () => { await logout(); navigate("/admin/login"); };
+  const saveBlog = async (data) => {
+    if (data.id) {
+      await api.put(`/admin/blogs/${data.id}`, data);
+      toast.success("Article updated");
+    } else {
+      await api.post("/admin/blogs", data);
+      toast.success("Article published");
+    }
+    setBlogForm(null);
+    loadAll();
+  };
 
+  const doLogout = async () => { await logout(); navigate("/admin/login"); };
   const fmt = (d) => (d ? new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "—");
 
   return (
     <div className="min-h-screen bg-warmivory" data-testid="admin-dashboard">
       <SEO title="Admin Dashboard" />
+
       {/* Top bar */}
       <header className="bg-white border-b border-beige sticky top-0 z-40">
         <div className="container-px py-4 flex items-center justify-between">
-          <Link to="/" className="font-serif text-xl font-semibold text-ink">Sparsh<span className="text-gold"> Pehla</span> <span className="text-ink-muted text-sm font-sans">· Admin</span></Link>
+          <Link to="/" className="font-serif text-xl font-semibold text-ink">
+            Sparsh<span className="text-gold"> Pehla</span>
+            <span className="text-ink-muted text-sm font-sans"> · Admin</span>
+          </Link>
           <div className="flex items-center gap-4">
             <span className="text-sm text-ink-soft hidden sm:inline">{user?.email}</span>
-            <button onClick={doLogout} data-testid="admin-logout" className="inline-flex items-center gap-2 text-sm text-ink-soft hover:text-destructive transition-colors">
+            <button
+              onClick={doLogout}
+              data-testid="admin-logout"
+              className="inline-flex items-center gap-2 text-sm text-ink-soft hover:text-destructive transition-colors"
+            >
               <LogOut size={16} /> Logout
             </button>
           </div>
@@ -84,12 +111,12 @@ export default function AdminDashboard() {
             <StatCard icon={Inbox} label="Total Inquiries" value={stats.inquiries} accent="bg-gold/15 text-gold-dark" />
             <StatCard icon={CalendarCheck} label="Bookings" value={stats.bookings} accent="bg-peach text-gold-dark" />
             <StatCard icon={Users} label="Subscribers" value={stats.subscribers} accent="bg-lavender text-earth" />
-            <StatCard icon={Sparkles} label="Services" value={stats.services} accent="bg-sage/20 text-earth" />
+            <StatCard icon={BookOpen} label="Articles" value={stats.blogs} accent="bg-sage/20 text-earth" />
           </div>
         )}
 
         <Tabs defaultValue="inquiries">
-          <TabsList className="bg-white border border-beige rounded-full p-1 mb-8">
+          <TabsList className="bg-white border border-beige rounded-full p-1 mb-8 flex-wrap gap-1">
             <TabsTrigger value="inquiries" data-testid="tab-inquiries" className="rounded-full data-[state=active]:bg-gold data-[state=active]:text-white">
               <MessageSquare size={15} className="mr-1.5" /> Inquiries
             </TabsTrigger>
@@ -98,6 +125,9 @@ export default function AdminDashboard() {
             </TabsTrigger>
             <TabsTrigger value="subscribers" data-testid="tab-subscribers" className="rounded-full data-[state=active]:bg-gold data-[state=active]:text-white">
               <Users size={15} className="mr-1.5" /> Subscribers
+            </TabsTrigger>
+            <TabsTrigger value="blogs" data-testid="tab-blogs" className="rounded-full data-[state=active]:bg-gold data-[state=active]:text-white">
+              <BookOpen size={15} className="mr-1.5" /> Articles
             </TabsTrigger>
           </TabsList>
 
@@ -171,29 +201,117 @@ export default function AdminDashboard() {
               )}
             </div>
           </TabsContent>
+
+          {/* Blogs / Articles */}
+          <TabsContent value="blogs">
+            <div className="flex items-center justify-between mb-5">
+              <p className="text-sm text-ink-muted">{blogs.length} article{blogs.length !== 1 ? "s" : ""}</p>
+              <button
+                onClick={() => setBlogForm({})}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gold text-white text-sm font-medium hover:bg-gold/90 transition-colors"
+              >
+                <Sparkles size={15} /> New Article
+              </button>
+            </div>
+
+            <div className="bg-white rounded-2xl border border-beige overflow-hidden">
+              {blogs.length === 0 ? <Empty label="No articles yet — create your first one!" /> : (
+                <div className="divide-y divide-beige">
+                  {blogs.map((b) => (
+                    <div key={b.id || b.slug} className="p-5 flex items-center gap-4">
+                      {/* Thumbnail */}
+                      <div className="w-14 h-14 rounded-xl overflow-hidden bg-beige shrink-0">
+                        {b.image
+                          ? <img src={img(b.image)} alt={b.title} className="w-full h-full object-cover" />
+                          : <div className="w-full h-full flex items-center justify-center text-ink-muted"><BookOpen size={20} /></div>}
+                      </div>
+
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <p className="font-medium text-ink truncate">{b.title}</p>
+                          {b.featured && (
+                            <Badge className="bg-gold/15 text-gold-dark border-0 text-xs">Featured</Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-ink-soft mt-0.5">
+                          {b.category}
+                          {b.author && ` · ${b.author}`}
+                          {b.reading_time && ` · ${b.reading_time} min read`}
+                        </p>
+                      </div>
+
+                      {/* Date + actions */}
+                      <div className="flex items-center gap-3 shrink-0">
+                        <span className="text-xs text-ink-muted hidden sm:inline">{fmt(b.created_at)}</span>
+                        <Link
+                          to={`/blog/${b.slug}`}
+                          target="_blank"
+                          className="w-9 h-9 rounded-full hover:bg-beige flex items-center justify-center text-ink-soft transition-colors"
+                          title="View live"
+                        >
+                          <ExternalLink size={15} />
+                        </Link>
+                        <RowMenu
+                          onEdit={() => setBlogForm(b)}
+                          onDelete={() => remove("blogs", b.id)}
+                          options={[]}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </TabsContent>
         </Tabs>
 
         <p className="mt-8 text-sm text-ink-muted">
-          Manage blogs, services & testimonials content directly in the database. <Link to="/" className="text-gold inline-flex items-center gap-1">View live site <ExternalLink size={13} /></Link>
+          <Link to="/" className="text-gold inline-flex items-center gap-1">
+            View live site <ExternalLink size={13} />
+          </Link>
         </p>
       </main>
+
+      {/* Blog create/edit modal */}
+      {blogForm !== null && (
+        <AdminBlogForm
+          blog={blogForm?.id ? blogForm : null}
+          onSave={saveBlog}
+          onClose={() => setBlogForm(null)}
+        />
+      )}
     </div>
   );
 }
 
 function Empty({ label }) {
-  return <div className="p-16 text-center text-ink-muted"><FileText className="mx-auto mb-3 opacity-40" /> {label}</div>;
+  return (
+    <div className="p-16 text-center text-ink-muted">
+      <FileText className="mx-auto mb-3 opacity-40" />
+      {label}
+    </div>
+  );
 }
 
-function RowMenu({ onStatus, onDelete, options }) {
+function RowMenu({ onEdit, onStatus, onDelete, options = [] }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="w-9 h-9 rounded-full hover:bg-beige flex items-center justify-center text-ink-soft" data-testid="row-menu" aria-label="Actions">
+        <button
+          className="w-9 h-9 rounded-full hover:bg-beige flex items-center justify-center text-ink-soft"
+          data-testid="row-menu"
+          aria-label="Actions"
+        >
           <MoreVertical size={18} />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-44">
+        {onEdit && (
+          <DropdownMenuItem onClick={onEdit} className="cursor-pointer">
+            <Pencil size={14} className="mr-2" /> Edit
+          </DropdownMenuItem>
+        )}
         {options.map((o) => (
           <DropdownMenuItem key={o} onClick={() => onStatus(o)} className="capitalize cursor-pointer">
             Mark as {o}

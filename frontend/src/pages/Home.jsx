@@ -1,7 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, ArrowUpRight, Heart, ShieldCheck, Sparkles, Clock, Instagram } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Heart, ShieldCheck, Sparkles, Clock, CalendarCheck, Phone, MessageCircle } from "lucide-react";
+
+function IgIcon({ size = 20 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { img, getServices, getTestimonials, getBlogs, getFaqs } from "../lib/api";
 import { Reveal, StaggerGroup, StaggerItem } from "../components/motion";
@@ -9,6 +19,7 @@ import SectionHeading from "../components/SectionHeading";
 import ServiceCard from "../components/ServiceCard";
 import TestimonialsCarousel from "../components/TestimonialsCarousel";
 import SEO from "../components/SEO";
+import { LOCAL_BUSINESS, ORGANIZATION } from "../lib/seo";
 
 const JOURNEY = [
   { phase: "Before", title: "Planning & Garbh Sanskar", desc: "Begin with intention — nurturing body, mind, and the sacred bond from the very start." },
@@ -43,7 +54,13 @@ export default function Home() {
 
   return (
     <div data-testid="home-page">
-      <SEO title="Supporting Every Step of Motherhood" />
+      <SEO
+        title="Sparsh Pehla — Maternity & Parenting Wellness Centre, Vadodara"
+        description="Sparsh Pehla is Vadodara's trusted luxury maternity and parenting wellness centre. Garbh Sanskar, prenatal yoga, baby massage, lactation guidance, postpartum care and more — supporting every step of motherhood."
+        image={img("hero")}
+        canonical={window.location.origin}
+        jsonLd={[LOCAL_BUSINESS, ORGANIZATION]}
+      />
 
       {/* ============ HERO ============ */}
       <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden">
@@ -138,13 +155,21 @@ export default function Home() {
               </Link>
             </Reveal>
           </div>
-          <StaggerGroup className="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
-            {services.slice(0, 6).map((s) => (
-              <StaggerItem key={s.slug}>
-                <ServiceCard service={s} />
-              </StaggerItem>
-            ))}
-          </StaggerGroup>
+          {services.length === 0 ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="h-72 rounded-2xl bg-beige animate-pulse" />
+              ))}
+            </div>
+          ) : (
+            <StaggerGroup className="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
+              {services.slice(0, 6).map((s) => (
+                <StaggerItem key={s.slug}>
+                  <ServiceCard service={s} />
+                </StaggerItem>
+              ))}
+            </StaggerGroup>
+          )}
         </div>
       </section>
 
@@ -221,22 +246,59 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============ INSTAGRAM FEED ============ */}
+      {/* ============ INSTAGRAM ============ */}
       <section className="section-py bg-ivory">
         <div className="container-px">
-          <SectionHeading eyebrow="@sparshpehla" title="Moments from our community" align="center" className="!items-center mb-12" />
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+          {/* CTA Banner */}
+          <Reveal>
+            <a
+              href="https://www.instagram.com/sparsh.pehla/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col sm:flex-row items-center justify-between gap-6 rounded-3xl px-8 py-8 md:px-14 md:py-10 mb-10 overflow-hidden relative"
+              style={{ background: "linear-gradient(135deg, #f9e8d0 0%, #fde9c5 40%, #f5d6e8 100%)" }}
+            >
+              {/* Left */}
+              <div className="flex items-center gap-5">
+                <span className="w-16 h-16 rounded-2xl bg-white/70 flex items-center justify-center shadow-sm shrink-0">
+                  <IgIcon size={32} />
+                </span>
+                <div>
+                  <p className="text-xs font-semibold tracking-widest uppercase text-ink-muted mb-1">Instagram</p>
+                  <h3 className="font-serif text-2xl md:text-3xl text-ink leading-tight">Follow us to get the<br className="hidden sm:block" /> latest updates</h3>
+                </div>
+              </div>
+
+              {/* Right */}
+              <div className="flex flex-col items-center sm:items-end gap-2 shrink-0">
+                <p className="text-sm text-ink-soft text-center sm:text-right max-w-xs">
+                  Daily wellness tips, behind-the-scenes moments &amp; stories of motherhood — all on Instagram.
+                </p>
+                <span className="mt-2 inline-flex items-center gap-2 rounded-full bg-ink text-ivory px-7 py-3 text-sm font-medium group-hover:bg-gold transition-colors duration-300">
+                  <IgIcon size={16} />
+                  @sparsh.pehla
+                </span>
+              </div>
+            </a>
+          </Reveal>
+
+          {/* Photo grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {["gallery1", "gallery3", "intro", "newborn", "yoga", "baby_massage", "gallery4", "photography"].map((k, i) => (
               <Reveal key={k} delay={i * 0.05}>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="group relative block aspect-square rounded-xl overflow-hidden">
-                  <img src={img(k)} alt="Instagram post" loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div className="absolute inset-0 bg-gold/0 group-hover:bg-gold/40 transition-colors duration-300 flex items-center justify-center">
-                    <Instagram className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <a href="https://www.instagram.com/sparsh.pehla/" target="_blank" rel="noopener noreferrer" className="group relative block aspect-square rounded-2xl overflow-hidden">
+                  <img src={img(k)} alt="Sparsh Pehla on Instagram" loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/30 transition-colors duration-300 flex items-center justify-center">
+                    <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-75 group-hover:scale-100 transition-transform">
+                      <IgIcon size={30} />
+                    </span>
                   </div>
                 </a>
               </Reveal>
             ))}
           </div>
+
         </div>
       </section>
 
@@ -251,7 +313,7 @@ export default function Home() {
               </Link>
             </Reveal>
           </div>
-          <StaggerGroup className="grid md:grid-cols-3 gap-8">
+          <StaggerGroup key={blogs.length > 0 ? "loaded" : "empty"} className="grid md:grid-cols-3 gap-8">
             {blogs.map((b) => (
               <StaggerItem key={b.slug}>
                 <Link to={`/blog/${b.slug}`} data-testid={`home-blog-${b.slug}`} className="group block">
@@ -299,12 +361,16 @@ export default function Home() {
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium leading-tight">Begin your journey with Sparsh Pehla</h2>
             <p className="mt-5 text-ivory/70 text-lg">Let us support you with care, warmth, and wisdom — every step of the way.</p>
             <div className="mt-9 flex flex-wrap justify-center gap-4">
-              <Link to="/book" data-testid="cta-book" className="inline-flex items-center gap-2 rounded-full bg-gold px-8 py-3.5 text-sm font-medium text-white hover:bg-gold-dark hover:scale-[1.03] transition-all">
-                Book a Consultation <ArrowRight size={18} />
+              <Link to="/book" data-testid="cta-book" className="inline-flex items-center gap-2 rounded-full bg-gold px-8 py-3.5 text-sm font-medium text-white hover:bg-gold/90 hover:scale-[1.03] transition-all">
+                <CalendarCheck size={17} strokeWidth={1.8} /> Book a Consultation
               </Link>
-              <Link to="/contact" data-testid="cta-contact" className="inline-flex items-center gap-2 rounded-full border border-ivory/30 px-8 py-3.5 text-sm font-medium text-ivory hover:bg-ivory hover:text-ink transition-all">
-                Get in Touch
-              </Link>
+              <a href="tel:+918980024245" className="inline-flex items-center gap-2 rounded-full border border-ivory/30 px-8 py-3.5 text-sm font-medium text-ivory hover:bg-ivory hover:text-ink transition-all">
+                <Phone size={17} strokeWidth={1.5} /> Call Us
+              </a>
+              <a href={`https://wa.me/918980024245?text=${encodeURIComponent("Hello Sparsh Pehla! I'd love to know more about your maternity wellness services.")}`} target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3.5 text-sm font-medium text-white hover:bg-[#1eb85a] hover:scale-[1.03] transition-all">
+                <MessageCircle size={17} fill="white" strokeWidth={0} /> WhatsApp Us
+              </a>
             </div>
           </Reveal>
         </div>

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getGallery, img } from "../lib/api";
 import PageHero from "../components/PageHero";
 import SEO from "../components/SEO";
+import ContactCTA from "../components/ContactCTA";
 
 export default function Gallery() {
   const [items, setItems] = useState([]);
@@ -18,7 +19,11 @@ export default function Gallery() {
 
   return (
     <div data-testid="gallery-page">
-      <SEO title="Gallery" description="A curated gallery of tender motherhood moments — maternity, newborn, yoga, and wellness." />
+      <SEO
+        title="Gallery — Maternity & Wellness Moments"
+        description="A curated gallery of tender motherhood moments at Sparsh Pehla Vadodara — maternity shoots, newborn care, prenatal yoga, and wellness sessions captured with love."
+        canonical={`${window.location.origin}/gallery`}
+      />
       <PageHero
         eyebrow="Gallery"
         title="Moments worth treasuring"
@@ -71,6 +76,8 @@ export default function Gallery() {
           </motion.div>
         </div>
       </section>
+
+      <ContactCTA title="Love what you see?" subtitle="Experience it firsthand — book a consultation, call us, or WhatsApp for a warm, no-pressure chat." />
 
       {/* Lightbox */}
       <AnimatePresence>

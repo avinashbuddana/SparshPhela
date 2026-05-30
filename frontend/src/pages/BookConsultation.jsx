@@ -45,7 +45,11 @@ export default function BookConsultation() {
 
   return (
     <div data-testid="book-page">
-      <SEO title="Book a Consultation" description="Book a personalised maternity and parenting wellness consultation with Sparsh Pehla." />
+      <SEO
+        title="Book a Maternity Wellness Consultation — Sparsh Pehla, Vadodara"
+        description="Book a personalised maternity or parenting wellness consultation at Sparsh Pehla, Vadodara. Choose from Garbh Sanskar, prenatal yoga, lactation support, postpartum care and more."
+        canonical={`${window.location.origin}/book`}
+      />
       <PageHero
         eyebrow="Book a Consultation"
         title="Take the first gentle step"

@@ -5,6 +5,7 @@ import { getBlogs, getBlogCategories, img } from "../lib/api";
 import { Reveal, StaggerGroup, StaggerItem } from "../components/motion";
 import PageHero from "../components/PageHero";
 import SEO from "../components/SEO";
+import ContactCTA from "../components/ContactCTA";
 
 export default function Blog() {
   const [blogs, setBlogs] = useState([]);
@@ -29,7 +30,11 @@ export default function Blog() {
 
   return (
     <div data-testid="blog-page">
-      <SEO title="The Journal" description="Wisdom, tips, and gentle guidance on pregnancy care, garbh sanskar, baby care, nutrition, and emotional wellness." />
+      <SEO
+        title="The Journal — Maternity & Parenting Wellness Articles"
+        description="Expert articles on pregnancy care, Garbh Sanskar, prenatal yoga, baby massage, postpartum recovery, lactation and parenting — by the specialists at Sparsh Pehla, Vadodara."
+        canonical={`${window.location.origin}/blog`}
+      />
       <PageHero
         eyebrow="The Journal"
         title="Stories & wisdom for your journey"
@@ -90,7 +95,7 @@ export default function Blog() {
           )}
 
           {/* Grid */}
-          <StaggerGroup className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <StaggerGroup key={blogs.length} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {(active === "All" && !search ? rest : blogs).map((b) => (
               <StaggerItem key={b.slug}>
                 <Link to={`/blog/${b.slug}`} data-testid={`blog-card-${b.slug}`} className="group block h-full">
@@ -107,6 +112,8 @@ export default function Blog() {
           </StaggerGroup>
         </div>
       </section>
+
+      <ContactCTA title="Ready to experience this yourself?" subtitle="Our specialists are here for you — book a consultation, call, or WhatsApp us anytime." />
     </div>
   );
 }

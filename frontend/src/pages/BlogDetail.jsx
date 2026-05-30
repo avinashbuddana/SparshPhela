@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Clock, ArrowLeft, ArrowUpRight } from "lucide-react";
+import { Clock, ArrowLeft, ArrowUpRight, CalendarDays } from "lucide-react";
 import { getBlog, img } from "../lib/api";
 import { Reveal } from "../components/motion";
 import SEO from "../components/SEO";
+import { breadcrumb } from "../lib/seo";
+import ContactCTA from "../components/ContactCTA";
+
+function fmtDate(d) {
+  if (!d) return null;
+  return new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+}
 
 export default function BlogDetail() {
   const { slug } = useParams();
@@ -26,27 +33,63 @@ export default function BlogDetail() {
   }
   if (!blog) return <div className="min-h-screen flex items-center justify-center text-ink-muted">Loading…</div>;
 
+  // SEO values — CMS fields take priority, fall back to blog fields
+  const seoTitle = blog.seo_title || blog.title;
+  const seoDesc  = blog.meta_description || blog.excerpt;
+  const pageUrl  = `${window.location.origin}/blog/${blog.slug}`;
+
   return (
     <div data-testid="blog-detail-page">
-      <SEO title={blog.title} description={blog.excerpt} image={img(blog.image)} />
+      <SEO
+        title={seoTitle}
+        description={seoDesc}
+        image={img(blog.image)}
+        type="article"
+        canonical={pageUrl}
+        article={{
+          publishedTime: blog.created_at,
+          author: blog.author,
+          authorRole: blog.author_role,
+          section: blog.category,
+          tags: blog.tags,
+          readingTime: blog.reading_time,
+          focusKeyword: blog.focus_keyword,
+        }}
+        jsonLd={breadcrumb([
+          { name: "Home", url: "/" },
+          { name: "The Journal", url: "/blog" },
+          { name: blog.title },
+        ])}
+      />
 
-      {/* Hero */}
       <article>
+        {/* Hero header */}
         <header className="pt-36 md:pt-44 pb-12 bg-warmivory">
           <div className="container-px max-w-3xl">
             <Link to="/blog" className="flex items-center gap-2 text-sm text-ink-muted hover:text-gold mb-6 transition-colors">
               <ArrowLeft size={16} /> The Journal
             </Link>
             <span className="label-eyebrow">{blog.category}</span>
-            <h1 className="mt-4 font-serif text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-tight font-medium text-ink text-balance">{blog.title}</h1>
-            <div className="mt-6 flex items-center gap-4 text-sm text-ink-soft">
+            <h1 className="mt-4 font-serif text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-tight font-medium text-ink text-balance">
+              {blog.title}
+            </h1>
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-ink-soft">
               <span className="font-medium text-ink">{blog.author}</span>
-              <span className="text-ink-muted">{blog.author_role}</span>
-              <span className="flex items-center gap-1.5 text-ink-muted"><Clock size={14} /> {blog.reading_time} min read</span>
+              {blog.author_role && <span className="text-ink-muted">{blog.author_role}</span>}
+              {blog.created_at && (
+                <span className="flex items-center gap-1.5 text-ink-muted">
+                  <CalendarDays size={14} />
+                  {fmtDate(blog.created_at)}
+                </span>
+              )}
+              <span className="flex items-center gap-1.5 text-ink-muted">
+                <Clock size={14} /> {blog.reading_time} min read
+              </span>
             </div>
           </div>
         </header>
 
+        {/* Hero image */}
         <div className="container-px max-w-4xl -mt-2">
           <Reveal>
             <div className="rounded-[2rem] overflow-hidden shadow-xl h-[340px] md:h-[480px]">
@@ -55,7 +98,7 @@ export default function BlogDetail() {
           </Reveal>
         </div>
 
-        {/* Content */}
+        {/* Article content */}
         <div className="section-py">
           <div className="container-px max-w-3xl">
             <div className="prose-content space-y-6">
@@ -64,6 +107,7 @@ export default function BlogDetail() {
               ))}
             </div>
 
+            {/* Tags */}
             {blog.tags?.length > 0 && (
               <div className="mt-10 flex flex-wrap gap-2">
                 {blog.tags.map((t) => (
@@ -71,11 +115,24 @@ export default function BlogDetail() {
                 ))}
               </div>
             )}
+
+            {/* Author card */}
+            {blog.author && (
+              <div className="mt-12 p-6 rounded-2xl bg-warmivory border border-beige flex gap-4 items-start">
+                <div className="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center shrink-0 text-gold font-serif text-lg font-semibold">
+                  {blog.author.charAt(0)}
+                </div>
+                <div>
+                  <p className="font-medium text-ink">{blog.author}</p>
+                  {blog.author_role && <p className="text-sm text-ink-muted">{blog.author_role}</p>}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </article>
 
-      {/* Related */}
+      {/* Related articles */}
       {blog.related?.length > 0 && (
         <section className="section-py bg-warmivory">
           <div className="container-px">
@@ -94,6 +151,11 @@ export default function BlogDetail() {
           </div>
         </section>
       )}
+
+      <ContactCTA
+        title="Inspired? Let's talk."
+        subtitle="Book a personalised consultation with our specialists, call us, or ping us on WhatsApp — we'd love to support you."
+      />
     </div>
   );
 }

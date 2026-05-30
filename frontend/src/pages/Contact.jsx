@@ -5,9 +5,10 @@ import InquiryForm from "../components/InquiryForm";
 import SectionHeading from "../components/SectionHeading";
 import PageHero from "../components/PageHero";
 import SEO from "../components/SEO";
+import { LOCAL_BUSINESS, breadcrumb } from "../lib/seo";
 
 const INFO = [
-  { icon: MapPin, label: "Visit Us", value: "Wellness Lane, Pune, Maharashtra, India" },
+  { icon: MapPin, label: "Visit Us", value: "Kanha Gold B/s. New BPs, G-102, Dabhoi - Waghodia Ring Rd, nr. Ganesh Nagar, Suryanagar, Vadodara, Gujarat 390019" },
   { icon: Phone, label: "Call Us", value: "+91 89800 24245" },
   { icon: Mail, label: "Email Us", value: "sparsh.pehla@gmail.com" },
   { icon: Clock, label: "Hours", value: "Mon–Sat · 9:00 AM – 7:00 PM" },
@@ -16,7 +17,12 @@ const INFO = [
 export default function Contact() {
   return (
     <div data-testid="contact-page">
-      <SEO title="Contact Us" description="Get in touch with Sparsh Pehla for maternity and parenting wellness support." />
+      <SEO
+        title="Contact Sparsh Pehla — Maternity Wellness Centre, Vadodara"
+        description="Contact Sparsh Pehla in Vadodara for maternity and parenting wellness — Garbh Sanskar, prenatal yoga, lactation guidance and postpartum care. Call +91 89800 24245."
+        canonical={`${window.location.origin}/contact`}
+        jsonLd={[LOCAL_BUSINESS, breadcrumb([{ name: "Home", url: "/" }, { name: "Contact Us" }])]}
+      />
       <PageHero
         eyebrow="Contact Us"
         title="We'd love to hear from you"
@@ -45,7 +51,7 @@ export default function Contact() {
             <Reveal className="mt-10 rounded-2xl overflow-hidden border border-beige h-72">
               <iframe
                 title="Sparsh Pehla location"
-                src="https://www.google.com/maps?q=Pune,Maharashtra&output=embed"
+                src="https://maps.google.com/maps?q=Kanha+Gold+Dabhoi+Waghodia+Ring+Rd+Suryanagar+Vadodara+Gujarat+390019&output=embed&z=15"
                 className="w-full h-full"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"

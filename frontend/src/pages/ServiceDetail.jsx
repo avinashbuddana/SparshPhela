@@ -10,6 +10,8 @@ import SectionHeading from "../components/SectionHeading";
 import InquiryForm from "../components/InquiryForm";
 import TestimonialsCarousel from "../components/TestimonialsCarousel";
 import SEO from "../components/SEO";
+import { breadcrumb, SITE_URL } from "../lib/seo";
+import ContactCTA from "../components/ContactCTA";
 
 export default function ServiceDetail() {
   const { slug } = useParams();
@@ -40,7 +42,17 @@ export default function ServiceDetail() {
 
   return (
     <div data-testid="service-detail-page">
-      <SEO title={service.title} description={service.short_description} image={img(service.image)} />
+      <SEO
+        title={`${service.title} — Maternity Wellness, Vadodara`}
+        description={service.hero_description || service.short_description}
+        image={img(service.image)}
+        canonical={`${SITE_URL}/services/${service.slug}`}
+        jsonLd={breadcrumb([
+          { name: "Home", url: "/" },
+          { name: "Services", url: "/services" },
+          { name: service.title },
+        ])}
+      />
 
       {/* Hero */}
       <section className="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden">
@@ -166,7 +178,13 @@ export default function ServiceDetail() {
         </div>
       </section>
 
-      {/* Inquiry */}
+      <ContactCTA
+        title={`Ready to experience ${service.title}?`}
+        subtitle="Book a consultation, call us, or WhatsApp — our team is here to guide you every step of the way."
+        bg="warm"
+      />
+
+      {/* Inquiry form */}
       <section className="section-py bg-ivory">
         <div className="container-px grid md:grid-cols-2 gap-12 items-start">
           <div>
