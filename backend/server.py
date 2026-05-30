@@ -553,9 +553,12 @@ async def sitemap_xml():
     return Response(content="\n".join(parts), media_type="application/xml")
 
 
+_frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:3000")
+_allow_origins = ["*"] if _frontend_url == "*" else [o.strip() for o in _frontend_url.split(",")]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.environ.get("FRONTEND_URL", "http://localhost:3000")],
+    allow_origins=_allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -10,7 +10,7 @@
   # so all API calls use relative URLs — no CORS, no origin issues.
   REACT_APP_BACKEND_URL = ""
   # Update this once your custom domain is live:
-  REACT_APP_SITE_URL = "https://sparshpehla.com"
+  REACT_APP_SITE_URL = "https://sparshpehla.netlify.app"
 
 # ── Proxy: /api/* → Railway backend ─────────────────────────────────────────
 # Replace YOUR_RAILWAY_URL with your actual Railway backend URL, e.g.:
