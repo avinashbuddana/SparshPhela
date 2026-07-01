@@ -38,7 +38,9 @@ export default function ServiceDetail() {
     return <div className="min-h-screen flex items-center justify-center text-ink-muted">Loading…</div>;
   }
 
-  const galleryKeys = [service.image, "intro", "gallery1", "gallery3"];
+  const galleryKeys = service.slug === "pre-maternity-photography"
+    ? [service.image, "photography_alt", "gallery1", "gallery3"]
+    : [service.image, "intro", "gallery1", "gallery3"];
 
   return (
     <div data-testid="service-detail-page">

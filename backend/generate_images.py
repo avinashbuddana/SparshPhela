@@ -1,16 +1,16 @@
 """
 Standalone script to generate premium photorealistic images for Sparsh Pehla
-using Gemini Nano Banana (gemini-3.1-flash-image-preview) via emergentintegrations.
+using Gemini Nano Banana (gemini-2.5-flash-image) via the Google GenAI SDK.
 Images are saved to /app/backend/media/<key>.png
-Run: python generate_images.py
+Run: python generate_images.py <key> [<key> ...]   (only regenerates the keys listed, always overwriting)
+     python generate_images.py                      (generates any keys with no existing file yet)
 """
 import asyncio
 import os
-import base64
-import uuid
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
-from emergentintegrations.llm.chat import LlmChat, UserMessage
+from google import genai
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / ".env")
@@ -18,8 +18,9 @@ load_dotenv(ROOT_DIR / ".env")
 MEDIA_DIR = ROOT_DIR / "media"
 MEDIA_DIR.mkdir(exist_ok=True)
 
-API_KEY = os.getenv("EMERGENT_LLM_KEY")
-MODEL = "gemini-3.1-flash-image-preview"
+API_KEY = os.getenv("GEMINI_API_KEY")
+MODEL = "gemini-2.5-flash-image"
+client = genai.Client(api_key=API_KEY)
 
 STYLE = (
     "Premium editorial photography, cinematic warm golden-hour lighting, soft shallow depth of field, "
@@ -31,12 +32,15 @@ IMAGES = {
     "hero": "A serene Indian expecting mother in a flowing soft beige dress gently cradling her pregnant belly near a sunlit window with sheer curtains, peaceful and radiant.",
     "intro": "Close-up of an Indian mother's hands tenderly holding her newborn baby's tiny feet, wrapped in a soft cream muslin blanket.",
     "about": "A graceful Indian woman wellness practitioner in elegant attire smiling warmly in a bright airy studio with plants and soft natural light.",
-    "family_counselling": "A warm Indian couple sitting together on a comfortable sofa in a softly lit calm room, holding hands and smiling gently, expecting parents.",
+    "about_pregnancy": "An overjoyed Indian husband and wife sitting together on a sofa at home, both looking at a home pregnancy test kit in the wife's hands, sharing an emotional, tearful-with-happiness reaction to the positive result, warm intimate morning light.",
+    "about_delivery": "The tender first moment right after childbirth in a hospital delivery room — an Indian father and mother together gently touching and looking at their newborn baby for the very first time, emotional and overwhelmed with love, soft warm delivery-room light, mother still in a hospital gown.",
+    "family_counselling": "A warm Indian couple sitting together on a comfortable sofa in a softly lit calm room, in a caring conversation with a compassionate family counsellor seated in an armchair facing them, all three people clearly visible, gentle supportive atmosphere, expecting parents.",
     "garbh_sanskar": "A peaceful pregnant Indian woman meditating cross-legged with a soft glow, candles and flowers nearby, spiritual serene ambience.",
     "yoga": "A pregnant Indian woman practicing gentle prenatal yoga on a mat in a bright minimalist studio, soft morning light, calm and graceful pose.",
-    "pre_shopping": "Beautifully arranged premium baby essentials, soft knitted clothes, wooden toys and blankets in warm neutral tones on a clean surface.",
+    "pre_shopping": "An Indian husband and wife happily shopping together for baby items in a bright modern baby-products store, browsing a rack of tiny clothes and a stroller together, smiling and pointing things out to each other, retail shelves with baby products in the background.",
     "photography": "An artistic maternity portrait of an Indian expecting mother in a flowing gown, soft dreamy backlight, elegant and cinematic.",
-    "baby_massage": "An Indian mother gently giving an oil massage to her smiling baby on a soft towel, warm intimate lighting, tender bonding moment.",
+    "photography_alt": "An artistic maternity portrait of an Indian expecting mother in a flowing gown standing close together with her husband, his hand resting gently on her belly, both smiling tenderly at each other, soft dreamy backlight, elegant cinematic outdoor setting.",
+    "baby_massage": "An elderly Indian Maharashtrian woman (traditional baby-massage 'maasi'), wearing a simple traditional cotton saree, gently giving an oil massage to a baby lying on a soft towel on her lap. Only the elderly woman and the baby are present in the frame, no mother or younger adult visible, warm intimate home lighting, authentic traditional atmosphere.",
     "wellness_program": "A relaxed pregnant Indian woman receiving a calming wellness session in a luxurious spa-like room with soft drapes and warm light.",
     "mother_care": "A caring scene of a new Indian mother resting peacefully while being supported, cozy warm bedroom, nurturing atmosphere.",
     "newborn": "A sleeping Indian newborn baby swaddled in soft cream cloth, tiny and peaceful, warm soft natural light.",
@@ -53,23 +57,24 @@ IMAGES = {
 }
 
 
-async def generate_one(key: str, prompt: str):
+async def generate_one(key: str, prompt: str, force: bool = False):
     out_path = MEDIA_DIR / f"{key}.png"
-    if out_path.exists():
+    if out_path.exists() and not force:
         print(f"[skip] {key} already exists")
         return
     try:
-        chat = LlmChat(
-            api_key=API_KEY,
-            session_id=f"sparsh-{key}-{uuid.uuid4()}",
-            system_message="You are a premium photography image generator.",
-        )
-        chat.with_model("gemini", MODEL).with_params(modalities=["image", "text"])
         full_prompt = f"{prompt} {STYLE}"
-        msg = UserMessage(text=full_prompt)
-        _, images = await chat.send_message_multimodal_response(msg)
-        if images:
-            image_bytes = base64.b64decode(images[0]["data"])
+        response = await asyncio.to_thread(
+            client.models.generate_content,
+            model=MODEL,
+            contents=[full_prompt],
+        )
+        image_bytes = None
+        for part in response.candidates[0].content.parts:
+            if getattr(part, "inline_data", None) is not None:
+                image_bytes = part.inline_data.data
+                break
+        if image_bytes:
             with open(out_path, "wb") as f:
                 f.write(image_bytes)
             print(f"[ok] saved {key}.png ({len(image_bytes)} bytes)")
@@ -80,8 +85,16 @@ async def generate_one(key: str, prompt: str):
 
 
 async def main():
-    for key, prompt in IMAGES.items():
-        await generate_one(key, prompt)
+    requested = sys.argv[1:]
+    if requested:
+        for key in requested:
+            if key not in IMAGES:
+                print(f"[error] unknown key: {key}")
+                continue
+            await generate_one(key, IMAGES[key], force=True)
+    else:
+        for key, prompt in IMAGES.items():
+            await generate_one(key, prompt)
     print("DONE generating images")
 
 

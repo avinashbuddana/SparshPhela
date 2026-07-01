@@ -148,12 +148,20 @@ export default function Home() {
       <section className="section-py bg-warmivory">
         <div className="container-px grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="relative">
-            <ImageReveal
-              src={img("about")}
-              alt="About Sparsh Pehla"
-              className="relative rounded-[2rem] shadow-xl h-[520px]"
-              imgClassName="h-[520px]"
-            />
+            <div className="grid grid-rows-2 gap-4 h-[520px]">
+              <ImageReveal
+                src={img("about_pregnancy")}
+                alt="Expecting parents celebrating a positive pregnancy test together"
+                className="relative rounded-[2rem] shadow-xl h-full"
+                imgClassName="h-full"
+              />
+              <ImageReveal
+                src={img("about_delivery")}
+                alt="Parents holding their newborn for the first time after delivery"
+                className="relative rounded-[2rem] shadow-xl h-full"
+                imgClassName="h-full"
+              />
+            </div>
             <Float amount={8} duration={5} className="absolute -bottom-8 -right-4 md:right-8">
               <div className="glass rounded-2xl p-6 shadow-lg max-w-[220px]">
                 <p className="font-serif text-4xl text-gold">

@@ -552,17 +552,17 @@ BLOGS = [
 ]
 
 TESTIMONIALS = [
-    {"name": "Priya Sharma", "role": "Mother of a newborn", "location": "Mumbai", "rating": 5,
+    {"name": "Priya Sharma", "role": "Mother of a newborn", "location": "Vadodara", "rating": 5,
      "text": "Sparsh Pehla held my hand through my entire pregnancy. The Garbh Sanskar sessions brought me so much peace, and I felt truly cared for at every step.", "image": "about"},
-    {"name": "Anjali & Rohan Verma", "role": "First-time parents", "location": "Pune", "rating": 5,
+    {"name": "Anjali & Rohan Verma", "role": "First-time parents", "location": "Vadodara", "rating": 5,
      "text": "The family counselling sessions transformed how we communicate. We entered parenthood feeling united and prepared, thanks to their warmth and wisdom.", "image": "family_counselling"},
-    {"name": "Neha Gupta", "role": "Mother of two", "location": "Delhi", "rating": 5,
+    {"name": "Neha Gupta", "role": "Mother of two", "location": "Vadodara", "rating": 5,
      "text": "The prenatal yoga classes were a sanctuary. My instructor was so attentive and certified — I felt safe, strong, and calm right up to my delivery.", "image": "yoga"},
-    {"name": "Sneha Patel", "role": "New mother", "location": "Ahmedabad", "rating": 5,
+    {"name": "Sneha Patel", "role": "New mother", "location": "Vadodara", "rating": 5,
      "text": "Their lactation guidance saved my breastfeeding journey. Patient, kind, and never judgemental. I will be forever grateful for their support.", "image": "lactation"},
-    {"name": "Divya Nair", "role": "Mother of a 6-month-old", "location": "Bangalore", "rating": 5,
+    {"name": "Divya Nair", "role": "Mother of a 6-month-old", "location": "Vadodara", "rating": 5,
      "text": "The baby massage workshop was beautiful. My little one sleeps so much better now, and those quiet bonding moments are the best part of my day.", "image": "baby_massage"},
-    {"name": "Meena Iyer", "role": "Mother", "location": "Chennai", "rating": 5,
+    {"name": "Meena Iyer", "role": "Mother", "location": "Vadodara", "rating": 5,
      "text": "The postpartum recovery guidance helped me heal gently and feel like myself again. They cared for me as much as everyone cared for the baby.", "image": "postpartum"},
 ]
 
@@ -595,6 +595,9 @@ MEDIA_FALLBACKS = {
     "hero": "https://images.pexels.com/photos/3737599/pexels-photo-3737599.jpeg",
     "intro": "https://images.pexels.com/photos/4101057/pexels-photo-4101057.jpeg",
     "about": "https://images.pexels.com/photos/3984358/pexels-photo-3984358.jpeg",
+    "about_pregnancy": "https://images.pexels.com/photos/6463177/pexels-photo-6463177.jpeg",
+    "about_delivery": "https://images.pexels.com/photos/16553952/pexels-photo-16553952.jpeg",
+    "photography_alt": "https://images.pexels.com/photos/18671450/pexels-photo-18671450.jpeg",
     "family_counselling": "https://images.pexels.com/photos/4546122/pexels-photo-4546122.jpeg",
     "garbh_sanskar": "https://images.pexels.com/photos/3759659/pexels-photo-3759659.jpeg",
     "yoga": "https://images.pexels.com/photos/13849185/pexels-photo-13849185.jpeg",
