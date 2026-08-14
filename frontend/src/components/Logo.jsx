@@ -1,36 +1,23 @@
 import React from "react";
+import logoMarkFull from "../assets/logo-mark-full.svg";
 
-const SIZES = {
-  sm: { main: "text-[30px]", sub: "text-[15px]" },
-  md: { main: "text-[36px] md:text-[40px]", sub: "text-[18px] md:text-[20px]" },
-  lg: { main: "text-[44px]", sub: "text-[22px]" },
+const HEIGHTS = {
+  sm: "h-11",
+  md: "h-14 md:h-16",
+  lg: "h-20 md:h-24",
 };
 
 export default function Logo({ light = false, size = "md", className = "" }) {
-  const s = SIZES[size] || SIZES.md;
-  const mainFill = light ? "#F8EDD9" : "#FFFFFF";
-  const mainStroke = "#1A1210";
-  const subColor = light ? "#FF6B5E" : "#D62828";
+  const h = HEIGHTS[size] || HEIGHTS.md;
+  const img = <img src={logoMarkFull} alt="Sparsh Pehla" className={`w-auto ${h}`} />;
+
+  if (!light) {
+    return <span className={`inline-flex items-center ${className}`}>{img}</span>;
+  }
 
   return (
-    <span className={`relative inline-flex flex-col leading-none ${className}`}>
-      <span
-        style={{
-          fontFamily: '"Yellowtail", cursive',
-          color: mainFill,
-          WebkitTextStroke: `1.6px ${mainStroke}`,
-          paintOrder: "stroke fill",
-        }}
-        className={`${s.main} leading-[0.8]`}
-      >
-        Sparsh
-      </span>
-      <span
-        style={{ fontFamily: '"Caveat", cursive', color: subColor }}
-        className={`${s.sub} font-bold -mt-1.5 ml-1`}
-      >
-        Pehla&hellip;
-      </span>
+    <span className={`inline-flex items-center rounded-2xl bg-ivory px-3 py-2 ${className}`}>
+      {img}
     </span>
   );
 }
